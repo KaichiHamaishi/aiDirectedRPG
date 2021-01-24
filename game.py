@@ -13,7 +13,7 @@ from enemy import enemy
 #宝箱クラス
 from treasure import treasure
 
-def start_game(_player,_director,no_confirm=False,silent=False):
+def start_game(_player,_director,silent=False):
     player=_player
     player.silent=silent
     director=_director
@@ -39,7 +39,7 @@ def start_game(_player,_director,no_confirm=False,silent=False):
         director.show_description()
         print("階層:"+str(goal))
     start=""
-    if(no_confirm):
+    if(silent):
         start="y"
     while(not(start=="y" or start=="n")):
         print("\nゲームを開始しますか？[y/n]")
