@@ -12,16 +12,17 @@ class character:
     attack=3
     shield=1
     guard=False
-    def __init__(self):
-        pass
+    silent=False
+    def __init__(self,_silent=False):
+        self.silent=_silent
     def heal(self,value):
         if(self.hp<=0):
             return
         value=int(value)
         self.hp=min(self.hp+value,self.max_hp)
-        if(value!=0):
+        if(value!=0 and not self.silent):
             print(self.name+": "+str(self.hp)+"/"+str(self.max_hp)+" ("+str(value)+")")
-        if(self.hp<=0):
+        if(self.hp<=0 and not self.silent):
             print(self.name+"は倒れた")
     def give_damage(self,value):
         value=abs(value)
