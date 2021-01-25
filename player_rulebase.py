@@ -24,7 +24,7 @@ class rulebase(player):
         if(self.bomb>0 and enemy.hp<self.attack*2 and enemy.hp>self.attack):
             #無駄にならないなら爆弾
             command=2
-        if(self.hp>=5 and self.herb>0):
+        if(self.hp<=5 and self.herb>0):
             #危ないなら回復
             command=3
         
@@ -32,8 +32,8 @@ class rulebase(player):
     
     def map_command(self,ways):
         command = 0
-        if(self.hp>=5 and (type(ways[0]) is enemy)):
-           command=1
+        while(self.hp<=5 and (type(ways[0]) is enemy) and len(ways)-1<command):
+           command+=1
         return command
     
     

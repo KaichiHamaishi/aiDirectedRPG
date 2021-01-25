@@ -7,11 +7,12 @@ Created on Thu Jan 21 17:43:27 2021
 
 import game
 from require_human import require_human
-from player import player as player_parent
+#from player import player as player_parent
+from player_rulebase import rulebase
 from random_director import random_director
 
 #player=require_human("プレイヤー")
-player=player_parent("プレイヤー")
+player=rulebase("プレイヤー")
 director=random_director()
 
 print("1学習ごとに何回プレイ？:")
@@ -24,8 +25,7 @@ target_chance=float(input())
 for span in range(time_span):
     game_success=0
     for play in range(time_play):
-        game_success+=game.start_game(player,director,True,True)
-        player.reset()
+        game_success+=game.start_game(player,director,True)
     print("\n"+str(span)+"回目の学習結果:")
     chance=game_success/time_play
     print("クリア確率:",chance)
