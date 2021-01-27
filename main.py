@@ -11,6 +11,11 @@ from require_human import require_human
 from player_rulebase import rulebase
 from random_director import random_director
 
+def calc_score(chance,target):
+    x=chance-target
+    y=1-(x**2)*8
+    return y
+
 #player=require_human("プレイヤー")
 player=rulebase("プレイヤー")
 director=random_director()
@@ -29,6 +34,6 @@ for span in range(time_span):
     print("\n"+str(span)+"回目の学習結果:")
     chance=game_success/time_play
     print("クリア確率:",chance)
-    learn_score=-abs(chance-target_chance)+0.5
+    learn_score=calc_score(chance,target_chance)
     print("報酬:",learn_score,"\n")
         
