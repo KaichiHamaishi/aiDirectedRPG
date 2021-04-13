@@ -50,7 +50,9 @@ def start_game(_player,_director,silent=False):
     floor=0
     while(floor<=goal):
         if(not silent):
-            print("\n第"+str(floor)+"階")
+            print("\n目的地まであと"+str(goal-floor)+"km")
+            print(">"+("-"*goal)+"<")
+            print(" "+(" "*floor)+"^")
             player.show_status()
         ways=[]
         if(floor==goal):
