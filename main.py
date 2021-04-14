@@ -30,8 +30,9 @@ target_chance=float(input())
 for span in range(time_span):
     game_success=0
     for play in range(time_play):
-        game_success+=game.start_game(player,director,True)
-    print("\n"+str(span)+"回目の学習結果:")
+        player.reset()
+        game_success+=game.start_game(player,director,False)
+    print("\n"+str(span)+"回目の結果:")
     chance=game_success/time_play
     print("クリア確率:",chance)
     learn_score=calc_score(chance,target_chance)
