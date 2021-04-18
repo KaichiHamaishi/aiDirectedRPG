@@ -9,7 +9,8 @@ import game
 from require_human import require_human
 #from player import player as player_parent
 from player_rulebase import rulebase
-from random_director import random_director
+#from random_director import random_director
+from DQN_director_v1 import DQN_director_v1
 
 def calc_score(chance,target):
     x=chance-target
@@ -18,11 +19,11 @@ def calc_score(chance,target):
 
 #player=require_human("プレイヤー")
 player=rulebase("プレイヤー")
-director=random_director()
+director=DQN_director_v1()
 
-print("1学習ごとに何回プレイ？:")
+print("クリア確率を計測するためのプレイ回数は？:")
 time_play = int(input())
-print("何回学習する？:")
+print("それを何回？:")
 time_span = int(input())
 print("目標のクリア確率は？(0.0~1.0):")
 target_chance=float(input())
@@ -31,7 +32,7 @@ for span in range(time_span):
     game_success=0
     for play in range(time_play):
         player.reset()
-        game_success+=game.start_game(player,director,False)
+        game_success+=game.start_game(player,director,True)
     print("\n"+str(span)+"回目の結果:")
     chance=game_success/time_play
     print("クリア確率:",chance)
