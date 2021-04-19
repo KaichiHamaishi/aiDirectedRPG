@@ -33,9 +33,10 @@ for span in range(time_span):
     for play in range(time_play):
         player.reset()
         game_success+=game.start_game(player,director,True)
-    print("\n"+str(span)+"回目の結果:")
+    print("\n"+str(span+1)+"回目の結果:")
     chance=game_success/time_play
     print("クリア確率:",chance)
     learn_score=calc_score(chance,target_chance)
     print("報酬:",learn_score,"\n")
+    director.learn(learn_score)
         

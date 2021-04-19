@@ -14,13 +14,14 @@ from chainer import optimizers, serializers, utils
 from chainer import Link, Chain, ChainList
 import chainer.functions as F
 import chainer.links as L
+from collections import deque
 
 
 class DirectorChain(Chain):
     def __init__(self,input_count,output_count):
         super(DirectorChain, self).__init__(
-            l1=L.Linear(input_count,6),
-            l2=L.Linear(6,output_count)
+            l1=L.Linear(input_count,3),
+            l2=L.Linear(3,output_count)
 
         )
         
@@ -36,18 +37,55 @@ class DirectorChain(Chain):
 class DQN_director_v1(director):
     description="ディレクションを記録しておき、その記録と報酬を学習データにする。"
     model=None
+    x_len=0
+    y_len=0
+    epsilon=1.0
+    x_training=deque()
+    y_training=deque() 
+    
+    def __init__(self):
+        pass
     
     def make_map(self,floor,player,enemies,treasures):
-        result=[]
-        map_obj=enemies+treasures
-        player_status=np.array([player.status_array()])
+        #引数を適切な形に変形
+        map_obj=np.asarray(enemies+treasures)
+        player_status=np.array([[floor]+player.status_array()]).astype(np.float32)
+        #初期化されてないなら初期化
         if self.model is None:
-            self.model = DirectorChain(len(player_status),len(map_obj))
+            self.x_len=len(player_status[0])
+            self.y_len=len(map_obj)
+            self.model = DirectorChain(self.x_len,self.y_len)
             self.optimizer = optimizers.SGD()
             self.optimizer.setup(self.model)
-        xV=Variable(player_status)
-        ans=self.model.fwd(xV).data
-        result=map_obj[np.argsort(ans)[-1:-2:-1]]
-        return result
+        #イプシロンの確率でランダムに選ぶ、そうしないとすぐに収束してしまう
+        if(np.random.rand()<self.epsilon):
+            ans=np.random.rand(self.y_len)
+        else:
+            #前向き計算、ディレクションを取得
+            xV=Variable(player_status)
+            ans=self.model.fwd(xV).data[0]
+        result_index=ans.argsort()[:-3:-1]
+        result=map_obj[result_index]
+        print("["+','.join(map(lambda t:t.name,result))+"]")
+        #記録
+        self.x_training.append(player_status)
+        self.y_training.append(result_index)
+        
+        return result.tolist()
     def learn(self,reward):
-        pass
+        #学習データを変形
+        y_score=np.zeros((len(self.y_training),self.y_len))
+        for i in range(len(self.y_training)):
+            y_score[i][self.y_training[i]]=reward
+        x = Variable(np.array(self.x_training))
+        y = Variable(y_score.astype(np.float32))
+        #学習
+        self.model.zerograds()
+        loss = self.model(x,y)
+        loss.backward()
+        self.optimizer.update()
+        #ゴミ捨て
+        self.x_training.clear()
+        self.y_training.clear()
+        #ランダムに選ぶ可能性をへらす
+        self.epsilon-=0.01
