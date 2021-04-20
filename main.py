@@ -10,7 +10,8 @@ from require_human import require_human
 #from player import player as player_parent
 from player_rulebase import rulebase
 #from random_director import random_director
-from DQN_director_v1 import DQN_director_v1
+from DQN_director_v2 import DQN_director_v2
+from DQN_director_v3 import DQN_director_v3
 
 def calc_score(chance,target):
     x=chance-target
@@ -19,7 +20,7 @@ def calc_score(chance,target):
 
 #player=require_human("プレイヤー")
 player=rulebase("プレイヤー")
-director=DQN_director_v1()
+director=DQN_director_v3()
 
 print("クリア確率を計測するためのプレイ回数は？:")
 time_play = int(input())

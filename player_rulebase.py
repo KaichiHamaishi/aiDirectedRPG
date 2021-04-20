@@ -31,10 +31,16 @@ class rulebase(player):
         self.battle_action(enemy,command)
     
     def map_command(self,ways):
-        command = 0
-        while(self.hp<=5 and (type(ways[0]) is enemy) and len(ways)-1<command):
-           command+=1
-        return command
+        if(len(ways)<=1):
+            return 0
+        if(self.hp<=5 and (type(ways[0]) is enemy)):
+            return 1
+        if(type(ways[0]) == type(ways[1]) and type(ways[0]) is enemy):
+            if(ways[0].hp<ways[1].hp):
+                return 0
+            return 1
+        
+        return 0
     
     
         

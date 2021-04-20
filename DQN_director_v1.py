@@ -20,8 +20,9 @@ from collections import deque
 class DirectorChain(Chain):
     def __init__(self,input_count,output_count):
         super(DirectorChain, self).__init__(
-            l1=L.Linear(input_count,3),
-            l2=L.Linear(3,output_count)
+            l1=L.Linear(input_count,10),
+            l2=L.Linear(10,10),
+            l3=L.Linear(10,output_count)
 
         )
         
@@ -30,8 +31,9 @@ class DirectorChain(Chain):
 
     def fwd(self,x):
          h1 = F.sigmoid(self.l1(x))
-         h2 = self.l2(h1)
-         return h2
+         h2 = F.sigmoid(self.l2(h1))
+         h3 = self.l3(h2)
+         return h3
 
 
 class DQN_director_v1(director):

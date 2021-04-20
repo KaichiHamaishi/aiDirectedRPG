@@ -13,3 +13,5 @@ class director:
         print(self.description)
     def make_map(self,floor,player,enemies,treasures):
         return[enemies[0],treasures[0]]
+    def learn(self):
+        pass
