@@ -30,14 +30,14 @@ class DirectorChain(Chain):
         return F.mean_squared_error(self.fwd(x), y)
 
     def fwd(self,x):
-         h1 = F.sigmoid(self.l1(x))
-         h2 = F.sigmoid(self.l2(h1))
+         h1 = F.relu(self.l1(x))
+         h2 = F.relu(self.l2(h1))
          h3 = self.l3(h2)
          return h3
 
 
 class DQN_director_v3(director):
-    description="v2に加え、リプレイメモリをたまに記録しない。"
+    description="v2をシグモイドからReluに変更、εの減少量を変更、そしてリプレイメモリをたまに記録しない。"
     model=None
     x_len=0
     y_len=0
@@ -66,7 +66,7 @@ class DQN_director_v3(director):
             #前向き計算、ディレクションを取得
             xV=Variable(player_status)
             ans=self.model.fwd(xV).data[0]
-        result_index=ans.argsort()[:-3:-1]
+        result_index=ans.argsort()[:-3:-1].sort()
         result=map_obj[result_index]
         print("["+','.join(map(lambda t:t.name,result))+"]")
         #記録
@@ -78,9 +78,9 @@ class DQN_director_v3(director):
     def learn(self,reward):
         #報酬クリッピング
         if(reward<0.9):
-            reward=-1
+            reward=-1.0
         else:
-            reward=1
+            reward=1.0
         #学習データを変形
         y_score=np.zeros((len(self.y_training),self.y_len))
         for i in range(len(self.y_training)):
@@ -96,4 +96,4 @@ class DQN_director_v3(director):
         self.x_training.clear()
         self.y_training.clear()
         #ランダムに選ぶ可能性をへらす
-        self.epsilon-=0.01
+        self.epsilon-=0.001
