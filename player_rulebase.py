@@ -11,6 +11,8 @@ from enemy import enemy
 class rulebase(player):
     description="ルールベースで動作するプレイヤー。\n敵が技を出そうとしたら防御する。\n使ってちょうど倒せそうなら爆弾を使う。\nHPが5以下なら安全策をとる(戦闘の回避、薬草の使用)。"
     
+    no_mercy=False
+    
     def battle_command(self,enemy):
         #print("プレイヤーの生命力:"+str(self.hp)+"/"+str(self.max_hp))
         #print("0: 攻撃 (攻撃力"+str(self.attack)+")")
@@ -24,6 +26,9 @@ class rulebase(player):
         if(self.bomb>0 and enemy.hp<self.attack*2 and enemy.hp>self.attack):
             #無駄にならないなら爆弾
             command=2
+        if(self.bomb>0 and self.no_mercy):
+            #最終決戦なら爆弾をありったけ
+            command=2
         if(self.hp<=5 and self.herb>0):
             #危ないなら回復
             command=3
@@ -32,6 +37,7 @@ class rulebase(player):
     
     def map_command(self,ways):
         if(len(ways)<=1):
+            self.no_mercy=True
             return 0
         if(self.hp<=5 and (type(ways[0]) is enemy)):
             return 1

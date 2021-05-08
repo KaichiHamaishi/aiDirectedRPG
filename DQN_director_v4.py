@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Apr 20 16:06:50 2021
+Created on Sat May  8 16:36:29 2021
 
 @author: Kaichi Hamaishi
 """
-
 from director import director
 
 import numpy as np
@@ -38,8 +37,8 @@ class DirectorChain(Chain):
          return h4
 
 
-class DQN_director_v3(director):
-    description="v2をシグモイドからReluに変更、εの利用法を変更。"
+class DQN_director_v4(director):
+    description="v3に加え、同じ選択肢を提供することに罰則がある。"
     model=None
     x_len=0
     y_len=0
@@ -57,7 +56,7 @@ class DQN_director_v3(director):
         player_status=np.array([[floor]+player.status_array()]).astype(np.float32)
         #初期化されてないなら初期化
         if self.model is None:
-            self.x_len=len(player_status[0])
+            self.x_len=len(player_status[0]+2)
             self.y_len=len(map_obj)
             self.model = DirectorChain(self.x_len,self.y_len)
             self.optimizer = optimizers.SGD()
@@ -78,11 +77,15 @@ class DQN_director_v3(director):
         
         return result.tolist()
     def learn(self,reward):
+        #重複の数だけ報酬減額
+        dup=self.count_duplication(self.y_training)
+        reward-=0.2*dup
         #報酬クリッピング
         if(reward<0.9):
             reward=-1.0
         else:
             reward=1.0
+        
         #学習データを変形
         y_score=np.zeros((len(self.y_training),self.y_len))
         for i in range(len(self.y_training)):
@@ -100,3 +103,12 @@ class DQN_director_v3(director):
         #ランダムに選ぶ可能性をへらす
         self.epsilon-=0.01
         self.random=np.random.rand()<self.epsilon
+    def count_duplication(self,array):
+        unique=deque()
+        duplicate=0
+        for i in array:
+            if(not any(unique) or i in unique):
+                duplicate+=1
+            else:
+                unique.append(i)
+        return duplicate
