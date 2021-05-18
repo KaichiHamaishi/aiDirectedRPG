@@ -10,8 +10,7 @@ from require_human import require_human
 #from player import player as player_parent
 from player_rulebase import rulebase
 #from random_director import random_director
-#from DQN_director_v2 import DQN_director_v2
-from DQN_director_v4 import DQN_director_v4 as dqn
+from DQN_random_director import DQN_random_director as dqn
 
 def calc_score(chance,target):
     x=chance-target
