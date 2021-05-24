@@ -11,6 +11,7 @@ from require_human import require_human
 from player_rulebase import rulebase
 #from random_director import random_director
 from DQN_random_director import DQN_random_director as dqn
+from simple_climbing import simple_climmbing as climbing
 
 def calc_score(chance,target):
     x=chance-target
@@ -19,7 +20,8 @@ def calc_score(chance,target):
 
 #player=require_human("プレイヤー")
 player=rulebase("プレイヤー")
-director=dqn()
+#director=dqn()
+director=climbing()
 
 print("クリア確率を計測するためのプレイ回数は？:")
 time_play = int(input())
