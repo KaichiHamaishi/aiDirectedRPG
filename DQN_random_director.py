@@ -39,12 +39,14 @@ class DirectorChain(Chain):
 
 
 class DQN_random_director(director):
-    description="DQN_director_v3を、ε-グリーディから重み付きランダムに変更"
+    description="DQN_director_v4を、ε-グリーディからε-重み付きランダムに変更、またスコアに応じてεを増減"
     model=None
     x_len=0
     y_len=0
     x_training=deque()
     y_training=deque() 
+    epsilon=1.0
+    random=True
     
     def __init__(self):
         pass
@@ -60,11 +62,15 @@ class DQN_random_director(director):
             self.model = DirectorChain(self.x_len,self.y_len)
             self.optimizer = optimizers.SGD()
             self.optimizer.setup(self.model)
-        #前向き計算、ディレクションを取得
-        xV=Variable(player_status)
-        ans=self.model.fwd(xV).data[0]
-        #重み付きランダム
-        result_index=random.choices(range(len(map_obj)),k=2,weights=ans)
+        if(self.random):
+            #最初のうちは完全ランダム
+            result_index=random.choices(range(len(map_obj)),k=2)
+        else:
+            #前向き計算、ディレクションを取得
+            xV=Variable(player_status)
+            ans=self.model.fwd(xV).data[0]
+            #重み付きランダム
+            result_index=random.choices(range(len(map_obj)),k=2,weights=ans)
         result_index=np.sort(result_index)
         result=map_obj[result_index]
         print("["+','.join(map(lambda t:t.name,result))+"]")
@@ -97,6 +103,13 @@ class DQN_random_director(director):
         #ゴミ捨て
         self.x_training.clear()
         self.y_training.clear()
+        #完全ランダムにする可能性を変更
+        if reward>0:
+            if(self.epsilon>0):
+                self.epsilon-=0.01
+        elif(self.epsilon<1.0):
+            self.epsilon+=0.01
+        self.random=np.random.rand()<self.epsilon
     def count_duplication(self,array):
         unique=deque()
         duplicate=0
