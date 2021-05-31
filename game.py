@@ -18,9 +18,13 @@ def start_game(_player,_director,silent=False):
     player.silent=silent
     director=_director
     enemies=[
-        enemy("スライム",4,1,0,[0.5,0.5,0],silent),
-        enemy("ゴブリン",8,3,1,[0.6,0.2,0.2],silent),
-        enemy("ドラゴン",15,4,1,[0.6,0.1,0.3],silent)
+        enemy("弱いスライム",4,1,1,[0.5,0.5,0],silent),
+        enemy("スライム",7,2,2,[0.5,0.5,0],silent),
+        enemy("強いスライム",11,3,4,[0.5,0.5,0],silent),
+        enemy("弱いゴブリン",3,2,1,[0.6,0.2,0.2],silent),
+        enemy("ゴブリン",8,5,2,[0.6,0.2,0.2],silent),
+        enemy("強いゴブリン",10,5,2,[0.6,0.2,0.2],silent),
+        enemy("ドラゴン",25,6,3,[0.6,0.1,0.3],silent)
         ]
     treasures=[
         #名前,HP回復,最大HP,攻撃力,防御力,ばくだん,やくそう の順
@@ -56,7 +60,7 @@ def start_game(_player,_director,silent=False):
             player.show_status()
         ways=[]
         if(floor==goal):
-            ways=[enemy("ドラゴン",15,4,1,[0.6,0.1,0.3],silent)]#最後は必ず強敵を出す
+            ways=[enemy("ドラゴン",25,6,3,[0.6,0.1,0.3],silent)]#最後は必ず強敵を出す
         else:
             ways=director.make_map(floor,player,enemies,treasures)
         if(not silent):
