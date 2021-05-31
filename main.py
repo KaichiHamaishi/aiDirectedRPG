@@ -10,7 +10,7 @@ from require_human import require_human
 #from player import player as player_parent
 from player_rulebase import rulebase
 #from random_director import random_director
-from DQN_random_director import DQN_random_director as dqn
+from DQN_random_v3 import DQN_random_v3 as dqn
 from simple_climbing import simple_climmbing as climbing
 
 def calc_score(chance,target):
@@ -20,8 +20,8 @@ def calc_score(chance,target):
 
 #player=require_human("プレイヤー")
 player=rulebase("プレイヤー")
-#director=dqn()
-director=climbing()
+director=dqn()
+#director=climbing()
 
 print("クリア確率を計測するためのプレイ回数は？:")
 time_play = int(input())
@@ -46,4 +46,5 @@ for span in range(time_span):
     director.learn(learn_score)
 
 #学習結果を確かめるために手動プレイを開始
+director.random=False
 game.start_game(require_human("人間のプレイヤー"), director,False)

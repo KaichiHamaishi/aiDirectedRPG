@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat May  8 16:36:29 2021
+Created on Fri May 28 16:20:38 2021
 
 @author: Kaichi Hamaishi
 """
@@ -18,14 +18,12 @@ import random
 
 
 class DirectorChain(Chain):
-    def __init__(self,input_count,output_count):
+    def __init__(self,input_count,output_count,middle_height,middle_width):
+        self.middle_width=middle_width
         super(DirectorChain, self).__init__(
-            l_input=L.Linear(input_count,50),
-            l0=L.Linear(50,50),
-            l1=L.Linear(50,50),
-            l2=L.Linear(50,50),
-            l3=L.Linear(50,50),
-            l_output=L.Linear(50,output_count)
+            l_first=L.Linear(input_count,middle_height),
+            **{'middle_'+str(i) : L.Linear(middle_height,middle_height) for i in range(middle_width)},
+            l_last=L.Linear(middle_height,output_count)
 
         )
         
@@ -33,17 +31,16 @@ class DirectorChain(Chain):
         return F.mean_squared_error(self.fwd(x), y)
 
     def fwd(self,x):
-         h_input = F.relu(self.l_input(x))
-         h0=F.relu(self.l0(h_input))
-         h1=F.relu(self.l1(h0))
-         h2=F.relu(self.l2(h1))
-         h3=F.relu(self.l3(h2))
-         h_output = self.l_output(h3)
-         return h_output
+         h_first = F.relu(self.l_first(x))
+         h_mid=h_first
+         for i in range(self.middle_width):
+             h_mid=F.relu(globals()["middle_"+str(i)](h_mid))
+         h_last = self.l_last(h_first)
+         return h_last
 
 
-class DQN_random_director(director):
-    description="DQN_director_v4を、ε-グリーディからε-重み付きランダムに変更、またスコアに応じてεを増減"
+class DQN_random_v2(director):
+    description="DQN_random_directorの、中間層の数を可変に(未完成)"
     model=None
     x_len=0
     y_len=0
@@ -52,7 +49,9 @@ class DQN_random_director(director):
     epsilon=1.0
     random=True
     
-    def __init__(self):
+    def __init__(self,middle_height=10,middle_width=2):
+        self.middle_height=middle_height
+        self.middle_width=middle_width
         pass
     
     def make_map(self,floor,player,enemies,treasures):
@@ -63,7 +62,7 @@ class DQN_random_director(director):
         if self.model is None:
             self.x_len=len(player_status[0]+2)
             self.y_len=len(map_obj)
-            self.model = DirectorChain(self.x_len,self.y_len)
+            self.model = DirectorChain(self.x_len,self.y_len,self.middle_height,self.middle_width)
             self.optimizer = optimizers.SGD()
             self.optimizer.setup(self.model)
         if(self.random):
