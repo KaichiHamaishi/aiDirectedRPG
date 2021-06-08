@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat May  8 16:36:29 2021
+Created on Tue Jun  8 02:07:17 2021
 
 @author: Kaichi Hamaishi
 """
@@ -15,6 +15,7 @@ import chainer.functions as F
 import chainer.links as L
 from collections import deque
 import random
+import copy
 
 
 class DirectorChain(Chain):
@@ -42,15 +43,19 @@ class DirectorChain(Chain):
          return h_output
 
 
-class DQN_random_director(director):
-    description="DQN_director_v4を、ε-グリーディからε-重み付きランダムに変更、またスコアに応じてεを増減"
+class DQN_random_v5(director):
+    description="DQN_random_v4改造。学習において、選択肢のほかは0として教えていたことを修正"
     model=None
     x_len=0
     y_len=0
-    x_training=deque()
-    y_training=deque() 
+    x_training=[deque() for _ in range(10)]
+    y_training=[deque() for _ in range(10)]
+    y_law_training=[deque() for _ in range(10)]
+    scores=[0 for _ in range(10)]
     epsilon=1.0
     random=True
+    
+    learning_slot=0
     
     def __init__(self):
         pass
@@ -66,62 +71,61 @@ class DQN_random_director(director):
             self.model = DirectorChain(self.x_len,self.y_len)
             self.optimizer = optimizers.SGD()
             self.optimizer.setup(self.model)
+        #前向き計算、ディレクションを取得
+        xV=Variable(player_status)
+        ans=self.model.fwd(xV).data[0]
+        self.y_law_training[self.learning_slot].append(ans)
+        ans=ans-np.min(ans)
         if(self.random):
             #最初のうちは完全ランダム
             result_index=random.choices(range(len(map_obj)),k=2)
         else:
-            #前向き計算、ディレクションを取得
-            xV=Variable(player_status)
-            ans=self.model.fwd(xV).data[0]
-            ans=ans-np.min(ans)
             #重み付きランダム
             result_index=random.choices(range(len(map_obj)),k=2,weights=ans)
         result_index=np.sort(result_index)
         result=map_obj[result_index]
-        if random:
-            #print("["+','.join(map(lambda t:t.name,result))+"]")
-            pass
         #記録
-        self.x_training.append(player_status)
-        self.y_training.append(result_index)
+        self.x_training[self.learning_slot].append(player_status)
+        self.y_training[self.learning_slot].append(result_index)
         
         return result.tolist()
     def learn(self,reward):
         #重複の数だけ報酬減額
-        dup=self.count_duplication(self.y_training)
+        dup=self.count_duplication(self.y_training[self.learning_slot])
         reward-=0.2*dup
         #報酬クリッピング
         if(reward<0):
-            reward=-10.0
-        else:
-            reward=1.0
+            reward=-1.0
+        self.scores[self.learning_slot]=reward
+        self.learning_slot+=1
         
-        #学習データを変形
-        y_score=np.zeros((len(self.y_training),self.y_len))
-        for i in range(len(self.y_training)):
-            y_score[i][self.y_training[i]]=reward
-        x = Variable(np.array(self.x_training))
-        y = Variable(y_score.astype(np.float32))
-        #学習
-        self.model.zerograds()
-        loss = self.model(x,y)
-        loss.backward()
-        self.optimizer.update()
-        #ゴミ捨て
-        self.x_training.clear()
-        self.y_training.clear()
-        #完全ランダムにする可能性を変更
-        #if reward>0 or self.random:
-        #    if(self.epsilon>0):
-        #        self.epsilon-=0.1
-        #elif(self.epsilon<1.0):
-        #    self.epsilon+=0.1
-        if self.epsilon>0:
-            self.epsilon-=0.05
-        if self.epsilon<0:
-            self.epsilon=0
-        self.random=np.random.rand()<self.epsilon
-        print("ε:"+str(self.epsilon)+","+str(self.random))
+        if self.learning_slot>=10:
+            self.learning_slot=0
+            for j in range(10):
+                #学習データを変形
+                #y_score=np.zeros((len(self.y_training[j]),self.y_len))
+                y_score=np.array(self.y_law_training[j].copy())
+                for i in range(len(self.y_training[j])):
+                    y_score[i][self.y_training[j][i]]=self.scores[j]
+                x = Variable(np.array(self.x_training[j]))
+                y = Variable(y_score.astype(np.float32))
+                #学習
+                self.model.zerograds()
+                loss = self.model(x,y)
+                loss.backward()
+                self.optimizer.update()
+            #ゴミ捨て
+            for i in range(10):
+                self.x_training[i].clear()
+                self.y_training[i].clear()
+                self.y_law_training[i].clear()
+            #完全ランダムにする可能性を変更
+            if self.epsilon>0:
+                self.epsilon-=0.01
+            if self.epsilon<0:
+                self.epsilon=0
+            self.random=np.random.rand()<self.epsilon
+            print("ε:"+str(self.epsilon)+","+str(self.random))
     def count_duplication(self,array):
         unique=deque()
         duplicate=0

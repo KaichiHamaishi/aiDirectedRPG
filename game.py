@@ -112,10 +112,10 @@ def start_game(_player,_director,silent=False):
         
     game_success=player.hp>0
     if(game_success):
-        print("クリア！")
+        #print("クリア！")
         return 1
     else:
-        print("ゲームオーバー")
+        #print("ゲームオーバー")
         return 0
 
 
