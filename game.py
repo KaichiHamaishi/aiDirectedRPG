@@ -24,7 +24,7 @@ def start_game(_player,_director,silent=False):
         enemy("弱いゴブリン",3,2,1,[0.6,0.2,0.2],silent),
         enemy("ゴブリン",8,5,2,[0.6,0.2,0.2],silent),
         enemy("強いゴブリン",10,5,2,[0.6,0.2,0.2],silent),
-        enemy("ドラゴン",25,6,3,[0.6,0.1,0.3],silent)
+        enemy("ドラゴン",50,5,3,[0.6,0.1,0.3],silent)
         ]
     treasures=[
         #名前,HP回復,最大HP,攻撃力,防御力,ばくだん,やくそう の順
@@ -35,7 +35,7 @@ def start_game(_player,_director,silent=False):
         treasure("薬草",0,0,0,0,0,1),
         treasure("宿屋",10,0,0,0,0,0)
         ]
-    goal=10
+    goal=20
     if(not silent):
         print("プレイヤー:"+str(type(player)))
         player.show_description()
@@ -60,7 +60,7 @@ def start_game(_player,_director,silent=False):
             player.show_status()
         ways=[]
         if(floor==goal):
-            ways=[enemy("ドラゴン",25,6,3,[0.6,0.1,0.3],silent)]#最後は必ず強敵を出す
+            ways=[enemy("ドラゴン",50,5,3,[0.6,0.1,0.3],silent)]#最後は必ず強敵を出す
         else:
             ways=director.make_map(floor,player,enemies,treasures)
         if(not silent):
@@ -106,17 +106,17 @@ def start_game(_player,_director,silent=False):
                         print("敗北した...")
             
         if(player.hp<=0):
-            floor=goal
+            return floor
         
         floor+=1
-        
-    game_success=player.hp>0
-    if(game_success):
-        #print("クリア！")
-        return 1
-    else:
-        #print("ゲームオーバー")
-        return 0
+    return floor
+    #game_success=player.hp>0
+    #if(game_success):
+    #    #print("クリア！")
+    #    return 1
+    #else:
+    #    #print("ゲームオーバー")
+    #    return 0
 
 
 if __name__ == "__main__":

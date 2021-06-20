@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Jun  8 02:07:17 2021
+Created on Mon Jun 14 19:49:56 2021
 
 @author: Kaichi Hamaishi
 """
+
 from director import director
 
 import numpy as np
@@ -43,8 +44,8 @@ class DirectorChain(Chain):
          return h_output
 
 
-class DQN_random_v5(director):
-    description="DQN_random_v4改造。学習において、提示した選択肢のほかは0として教えていたことを修正"
+class DQN_random_v6(director):
+    description="DQN_director_v6の重み付きランダム版。"
     model=None
     x_len=0
     y_len=0
@@ -63,10 +64,11 @@ class DQN_random_v5(director):
     def make_map(self,floor,player,enemies,treasures):
         #引数を適切な形に変形
         map_obj=np.asarray(enemies+treasures)
-        player_status=np.array([[floor]+player.status_array()]).astype(np.float32)
+        player_status_randomized=np.array(list(map(self.seed_random,[floor]+player.status_array())))
+        player_status=np.array([player_status_randomized]).astype(np.float32)
         #初期化されてないなら初期化
         if self.model is None:
-            self.x_len=len(player_status[0]+2)
+            self.x_len=len(player_status[0])
             self.y_len=len(map_obj)
             self.model = DirectorChain(self.x_len,self.y_len)
             self.optimizer = optimizers.SGD()
@@ -84,6 +86,8 @@ class DQN_random_v5(director):
         else:
             #重み付きランダム
             result_index=random.choices(range(len(map_obj)),k=2,weights=ans)
+            if self.learning_slot==0:
+                print(str(np.around(ans,2))+"->"+str(np.sort(result_index)))
         result_index=np.sort(result_index)
         #最終結果
         result=map_obj[result_index]
@@ -149,3 +153,9 @@ class DQN_random_v5(director):
             else:
                 unique.append(i)
         return duplicate
+    #シード値から乱数を求める関数
+    def seed_random(self,seed):
+        random.seed(seed)
+        a=random.uniform(-10.0,10.0)
+        random.seed(None)
+        return a
