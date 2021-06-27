@@ -18,6 +18,7 @@ def start_game(_player,_director,silent=False):
     player.silent=silent
     director=_director
     enemies=[
+        #名前、HP、攻撃力、防御力、行動の確率[攻撃,防御,必殺]　の順
         enemy("弱いスライム",4,1,1,[0.5,0.5,0],silent),
         enemy("スライム",7,2,2,[0.5,0.5,0],silent),
         enemy("強いスライム",11,3,4,[0.5,0.5,0],silent),

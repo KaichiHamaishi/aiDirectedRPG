@@ -64,7 +64,14 @@ class player(character):
             self.herb-=1
             
     def status_array(self):
-        return[self.max_hp,self.hp,self.attack,self.shield,self.bomb,self.herb]
+        return[
+            self.max_hp,
+            self.hp,
+            self.attack,
+            self.shield,
+            self.bomb,
+            self.herb
+            ]
     
 if __name__ == "__main__":
     player().show_description()

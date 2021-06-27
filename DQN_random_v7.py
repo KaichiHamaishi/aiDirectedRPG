@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Jun 14 19:49:56 2021
+Created on Tue Jun 22 15:40:57 2021
 
 @author: Kaichi Hamaishi
 """
@@ -36,16 +36,16 @@ class DirectorChain(Chain):
 
     def fwd(self,x):
          h_input = F.relu(self.l_input(x))
-         h0=F.relu(self.l0(h_input))
-         h1=F.relu(self.l1(h0))
-         h2=F.relu(self.l2(h1))
-         h3=F.relu(self.l3(h2))
+         h0=F.softmax(self.l0(h_input))
+         h1=F.softmax(self.l1(h0))
+         h2=F.softmax(self.l2(h1))
+         h3=F.softmax(self.l3(h2))
          h_output = self.l_output(h3)
          return h_output
 
 
-class DQN_random_v6(director):
-    description="DQN_director_v6の重み付きランダム版。"
+class DQN_random_v7(director):
+    description="活性化関数をsoftmaxに。"
     model=None
     x_len=0
     y_len=0

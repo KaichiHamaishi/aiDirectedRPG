@@ -7,6 +7,7 @@ Created on Thu Jan 21 17:43:27 2021
 
 from collections import deque
 import numpy as np
+import matplotlib.pyplot as plt
 
 import game
 from require_human import require_human
@@ -14,7 +15,7 @@ from require_human import require_human
 from player_rulebase import rulebase
 #from random_director import random_director
 #from DQN_director_v6 import DQN_director_v6 as dqn
-from DQN_random_v6 import DQN_random_v6 as dqn
+from DQN_random_v7 import DQN_random_v7 as dqn
 from simple_climbing import simple_climmbing as climbing
 
 def calc_score(chance,target):
@@ -39,6 +40,7 @@ print("目標の平均到達階層は？(0.0~21.0):")
 target_chance=float(input())
 
 game_success=deque()
+history=deque()
 if time_span>0:
     for span in range(time_span):
         #自動プレイ
@@ -58,7 +60,9 @@ if time_span>0:
         print("報酬:",learn_score,"\n")
         #学習
         director.learn(learn_score)
+        history.append(learn_score)
         game_success.clear()
+        
 else:
     highscore_count=0
     span=0
@@ -80,6 +84,7 @@ else:
         print("報酬:",learn_score,"\n")
         #学習
         director.learn(learn_score)
+        history.append(learn_score)
         game_success.clear()
         if learn_score>-1:
             highscore_count+=1
@@ -89,7 +94,12 @@ else:
         span+=1
         if span%10==0:
             highscore_count=0
+        
+        
 
+plt.plot(range(span+1),history,label="score")
+plt.legend()
+plt.show()
 #学習結果を確かめるために手動プレイを開始
 director.random=False
 while True:
