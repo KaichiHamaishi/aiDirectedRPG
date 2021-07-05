@@ -19,12 +19,18 @@ def start_game(_player,_director,silent=False):
     director=_director
     enemies=[
         #名前、HP、攻撃力、防御力、行動の確率[攻撃,防御,必殺]　の順
-        enemy("弱いスライム",4,1,1,[0.5,0.5,0],silent),
-        enemy("スライム",7,2,2,[0.5,0.5,0],silent),
-        enemy("強いスライム",11,3,4,[0.5,0.5,0],silent),
-        enemy("弱いゴブリン",3,2,1,[0.6,0.2,0.2],silent),
-        enemy("ゴブリン",8,5,2,[0.6,0.2,0.2],silent),
-        enemy("強いゴブリン",10,5,2,[0.6,0.2,0.2],silent),
+        enemy("スライム Lv1",4,1,1,[0.5,0.5,0],silent),
+        enemy("スライム Lv2",5,1,2,[0.5,0.5,0],silent),
+        enemy("スライム Lv3",7,2,2,[0.5,0.5,0],silent),
+        enemy("スライム Lv4",9,3,3,[0.5,0.5,0],silent),
+        enemy("スライム Lv5",11,3,4,[0.5,0.5,0],silent),
+        
+        enemy("ゴブリン Lv1",3,2,1,[0.6,0.2,0.2],silent),
+        enemy("ゴブリン Lv2",5,4,1,[0.6,0.2,0.2],silent),
+        enemy("ゴブリン Lv3",8,5,2,[0.6,0.2,0.2],silent),
+        enemy("ゴブリン Lv4",10,6,2,[0.6,0.2,0.2],silent),
+        enemy("ゴブリン Lv5",13,7,3,[0.6,0.2,0.2],silent),
+        
         enemy("ドラゴン",50,5,3,[0.6,0.1,0.3],silent)
         ]
     treasures=[

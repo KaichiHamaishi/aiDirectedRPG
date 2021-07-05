@@ -40,7 +40,8 @@ print("目標の平均到達階層は？(0.0~21.0):")
 target_chance=float(input())
 
 game_success=deque()
-history=deque()
+score_history=deque()
+avg_history=deque()
 if time_span>0:
     for span in range(time_span):
         #自動プレイ
@@ -60,7 +61,8 @@ if time_span>0:
         print("報酬:",learn_score,"\n")
         #学習
         director.learn(learn_score)
-        history.append(learn_score)
+        score_history.append(learn_score)
+        avg_history.append(avg)
         game_success.clear()
         
 else:
@@ -84,7 +86,8 @@ else:
         print("報酬:",learn_score,"\n")
         #学習
         director.learn(learn_score)
-        history.append(learn_score)
+        score_history.append(learn_score)
+        avg_history.append(avg)
         game_success.clear()
         if learn_score>-1:
             highscore_count+=1
@@ -97,7 +100,8 @@ else:
         
         
 
-plt.plot(range(span+1),history,label="score")
+plt.plot(range(span+1),score_history,label="score")
+plt.plot(range(span+1),avg_history,label="average")
 plt.legend()
 plt.show()
 #学習結果を確かめるために手動プレイを開始
