@@ -11,7 +11,7 @@ import random
 class enemy(character):
     chances=[1.0,0.0,0.0] #攻撃,防御,必殺 の順
     notice=-1
-    def __init__(self,_name,_hp,_attack,_shield,_chances,_silent=False):
+    def __init__(self,_name,_hp,_attack,_shield,_chances,_exp,_silent=False):
         if(type(_chances) is not list):
             raise Exception("Error on enemy.__init__: '_chance' is not list")
         
@@ -22,6 +22,7 @@ class enemy(character):
         self.shield=_shield
         self.chances=_chances
         self.silent=_silent
+        self.exp=_exp
     def notice_attack(self):
         rand=random.uniform(0,sum(self.chances))
         for ind,val in enumerate(self.chances):

@@ -14,7 +14,7 @@ from require_human import require_human
 #from player import player as player_parent
 from player_rulebase import rulebase
 #from random_director import random_director
-#from DQN_director_v6 import DQN_director_v6 as dqn
+#from DQN_director_v7 import DQN_director_v7 as dqn
 from DQN_random_v7 import DQN_random_v7 as dqn
 from simple_climbing import simple_climmbing as climbing
 

@@ -20,18 +20,19 @@ class rulebase(player):
         #print("2: 爆弾を使う (2倍攻撃 残"+str(self.bomb)+")")
         #print("3: 薬草を使う (生命全快 残"+str(self.herb)+")")
         command=0
-        if(enemy.notice==2):
-            #技を予告されたら防御
-            command=1
         if(self.bomb>0 and enemy.hp<self.attack*2 and enemy.hp>self.attack):
             #無駄にならないなら爆弾
-            command=2
-        if(self.bomb>0 and self.no_mercy):
-            #最終決戦なら爆弾をありったけ
             command=2
         if(self.hp<=5 and self.herb>0):
             #危ないなら回復
             command=3
+        if(enemy.notice==2):
+            #技を予告されたら防御
+            command=1
+        if(self.bomb>0 and self.no_mercy):
+            #最終決戦なら爆弾をありったけ
+            command=2
+        
         
         self.battle_action(enemy,command)
     

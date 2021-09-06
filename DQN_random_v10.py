@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Jul  6 14:07:47 2021
+Created on Mon Jul 12 15:43:37 2021
 
 @author: Kaichi Hamaishi
 """
@@ -44,8 +44,8 @@ class DirectorChain(Chain):
          return h_output
 
 
-class DQN_random_v9(director):
-    description="学習率lr=0.01。"
+class DQN_random_v10(director):
+    description="学習が進むと学習率が減る。"
     model=None
     x_len=0
     y_len=0
@@ -58,12 +58,8 @@ class DQN_random_v9(director):
     
     learning_slot=0
     
-    learning_rate=0.01
-    
     def __init__(self):
-        print("学習率を指定してください(デフォルトは0.01)。")
-        self.learning_rate=float(input())
-        self.description="学習率lr={0}。".format(self.learning_rate)
+        pass
     
     def make_map(self,floor,player,enemies,treasures):
         #引数を適切な形に変形
@@ -75,7 +71,7 @@ class DQN_random_v9(director):
             self.x_len=len(player_status[0])
             self.y_len=len(map_obj)
             self.model = DirectorChain(self.x_len,self.y_len)
-            self.optimizer = optimizers.SGD(lr=self.learning_rate)
+            self.optimizer = optimizers.SGD()
             self.optimizer.setup(self.model)
         #前向き計算、ディレクションを取得
         xV=Variable(player_status)
@@ -120,6 +116,11 @@ class DQN_random_v9(director):
         #報酬の入力が溜まったらぜんぶ学習
         if self.learning_slot>=10:
             self.learning_slot=0
+            avg=abs(np.average(np.array(self.scores)))
+            if avg<5:
+                self.optimizer.lr=0.01/(10**((5-avg)/2))
+            else:
+                self.optimizer.lr=0.01
             for j in range(10):
                 #学習データを成形
                 y_score=np.array(self.y_law_training[j].copy())

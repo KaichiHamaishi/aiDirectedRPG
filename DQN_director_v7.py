@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Jul  6 14:07:47 2021
+Created on Sun Jul 18 19:08:07 2021
 
 @author: Kaichi Hamaishi
 """
-
 from director import director
 
 import numpy as np
@@ -44,8 +43,8 @@ class DirectorChain(Chain):
          return h_output
 
 
-class DQN_random_v9(director):
-    description="学習率lr=0.01。"
+class DQN_director_v7(director):
+    description="εグリーディ。学習率lr=0.01。"
     model=None
     x_len=0
     y_len=0
@@ -63,7 +62,7 @@ class DQN_random_v9(director):
     def __init__(self):
         print("学習率を指定してください(デフォルトは0.01)。")
         self.learning_rate=float(input())
-        self.description="学習率lr={0}。".format(self.learning_rate)
+        self.description="εグリーディ。学習率lr={0}。".format(self.learning_rate)
     
     def make_map(self,floor,player,enemies,treasures):
         #引数を適切な形に変形
@@ -88,10 +87,9 @@ class DQN_random_v9(director):
             #完全ランダム
             result_index=random.choices(range(len(map_obj)),k=2)
         else:
-            #重み付きランダム
-            result_index=random.choices(range(len(map_obj)),k=2,weights=ans)
+            result_index=ans.argsort()[:-3:-1]
             if self.learning_slot==0:
-                print(str(np.around(ans,2))+"->"+str(np.sort(result_index)))
+                print(str(ans)+"->"+str(np.sort(result_index)))
         result_index=np.sort(result_index)
         #最終結果
         result=map_obj[result_index]

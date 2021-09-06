@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Jan 11 17:14:17 2021
+Created on Thu Sep  2 18:06:28 2021
 
 @author: Kaichi Hamaishi
 """
+
 import numpy as np
 import sys
 import copy
@@ -20,19 +21,19 @@ def start_game(_player,_director,silent=False):
     goal=20
     enemies=[
         #名前、HP、攻撃力、防御力、行動の確率[攻撃,防御,必殺]　の順
-        enemy("スライム Lv1",4,1,1,[0.5,0.5,0],1,silent),
-        enemy("スライム Lv2",5,1,2,[0.5,0.5,0],2,silent),
-        enemy("スライム Lv3",7,2,2,[0.5,0.5,0],3,silent),
-        enemy("スライム Lv4",9,3,3,[0.5,0.5,0],4,silent),
-        enemy("スライム Lv5",11,3,4,[0.5,0.5,0],5,silent),
+        enemy("スライム Lv1",4,1,1,[0.5,0.5,0],silent),
+        enemy("スライム Lv2",5,1,2,[0.5,0.5,0],silent),
+        enemy("スライム Lv3",7,2,2,[0.5,0.5,0],silent),
+        enemy("スライム Lv4",9,3,3,[0.5,0.5,0],silent),
+        enemy("スライム Lv5",11,3,4,[0.5,0.5,0],silent),
         
-        enemy("ゴブリン Lv1",3,2,1,[0.6,0.2,0.2],1,silent),
-        enemy("ゴブリン Lv2",5,4,1,[0.6,0.2,0.2],2,silent),
-        enemy("ゴブリン Lv3",8,5,2,[0.6,0.2,0.2],3,silent),
-        enemy("ゴブリン Lv4",10,6,2,[0.6,0.2,0.2],4,silent),
-        enemy("ゴブリン Lv5",13,7,3,[0.6,0.2,0.2],5,silent),
+        enemy("ゴブリン Lv1",3,2,1,[0.6,0.2,0.2],silent),
+        enemy("ゴブリン Lv2",5,4,1,[0.6,0.2,0.2],silent),
+        enemy("ゴブリン Lv3",8,5,2,[0.6,0.2,0.2],silent),
+        enemy("ゴブリン Lv4",10,6,2,[0.6,0.2,0.2],silent),
+        enemy("ゴブリン Lv5",13,7,3,[0.6,0.2,0.2],silent),
         
-        enemy("ドラゴン",50,5,3,[0.6,0.1,0.3],10,silent)
+        enemy("ドラゴン",50,5,3,[0.6,0.1,0.3],silent)
         ]
     #enemies=list(map(
     #    lambda t:enemy(
@@ -89,7 +90,7 @@ def start_game(_player,_director,silent=False):
             player.show_status()
         ways=[]
         if(floor==goal):
-            ways=[enemy("ドラゴン",goal*2.5,goal*0.25,goal*0.15,[0.6,0.1,0.3],0,silent)]#最後は必ず強敵を出す
+            ways=[enemy("ドラゴン",goal*2.5,goal*0.25,goal*0.15,[0.6,0.1,0.3],silent)]#最後は必ず強敵を出す
         else:
             ways=director.make_map(floor,player,enemies,treasures)
         if(not silent):
@@ -127,11 +128,9 @@ def start_game(_player,_director,silent=False):
                     enemy_battle.execute_attack(player)
                 if(enemy_battle.hp<=0):
                     if(not silent):
-                        print("勝利！")
-                        if(enemy_battle.exp>0):
-                            print("攻撃力と防御力が"+str(enemy_battle.exp)+"上昇！")
-                    player.attack+=enemy_battle.exp
-                    player.shield+=enemy_battle.exp
+                        print("勝利！\n攻撃力+1！\n防御力+1！")
+                    player.attack+=1
+                    player.shield+=1
                 if(player.hp<=0):
                     if(not silent):
                         print("敗北した...")
