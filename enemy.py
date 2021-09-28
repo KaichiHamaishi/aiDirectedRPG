@@ -48,3 +48,10 @@ class enemy(character):
         else:
             self.guard=True
         self.notice=-1
+    def __mul__(self, other):
+        self.name=self.name+" Lv"+str(round(other)) 
+        self.max_hp*=other
+        self.hp*=other
+        self.attack*=other
+        self.shield*=other
+        return self

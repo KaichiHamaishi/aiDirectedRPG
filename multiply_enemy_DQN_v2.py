@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Sep  3 17:07:39 2021
+Created on Tue Sep 28 14:39:17 2021
 
 @author: Kaichi Hamaishi
 """
+
 from director import director
 
 import numpy as np
@@ -23,12 +24,12 @@ from enemy import enemy
 class DirectorChain(Chain):
     def __init__(self,input_count,output_count):
         super(DirectorChain, self).__init__(
-            l_input=L.Linear(input_count,50),
-            l0=L.Linear(50,50),
-            l1=L.Linear(50,50),
-            l2=L.Linear(50,50),
-            l3=L.Linear(50,50),
-            l_output=L.Linear(50,output_count)
+            l_input=L.Linear(input_count,10),
+            l0=L.Linear(10,10),
+            l1=L.Linear(10,10),
+            l2=L.Linear(10,10),
+            l3=L.Linear(10,10),
+            l_output=L.Linear(10,output_count)
 
         )
         
@@ -45,23 +46,22 @@ class DirectorChain(Chain):
          return h_output
 
 
-class rand_enemy_DQN(director):
-    description="都度生成される敵が出現。二択が必ず敵とアイテム。"
+class multiply_enemy_DQN(director):
+    description="未完成 宝物とモンスターが従来通りの出方をする"
     model=None
-    x_len=0 #入力層(プレイヤーのステータス+現在位置)の長さ
-    y_len=0 #出力層の長さ
-    x_training=[deque() for _ in range(10)] #入力値。プレイヤーのステータス
-    y_training=[deque() for _ in range(10)] #出した最終ディレクション
-    y_law_training=[deque() for _ in range(10)] #ディレクションするにあたって使ったナマの値
-    
-    model_enemy_gen=None
-    en_y_len=0 #出力層の長さ
-    en_y_training=[deque() for _ in range(10)] #出した最終ディレクション
-    en_y_law_training=[deque() for _ in range(10)] #ディレクションするにあたって使ったナマの値
-    
-    actual_result=[0 for _ in range(10)] #そのプレイでのプレイヤー最終到達階層
+    x_len=0
+    y_len=0
+    x_training=[deque() for _ in range(10)]
+    y_training=[deque() for _ in range(10)]
+    y_law_training=[deque() for _ in range(10)]
+    scores=[0 for _ in range(10)]
     epsilon=1.0
     random=True
+    
+    str_model=None
+    str_y_len=0 #出力層の長さ
+    str_y_training=[deque() for _ in range(10)] #出した最終ディレクション
+    str_y_law_training=[deque() for _ in range(10)] #ディレクションするにあたって使ったナマの値
     
     learning_slot=0
     
@@ -70,7 +70,13 @@ class rand_enemy_DQN(director):
     
     def make_map(self,floor,player,enemies,treasures):
         #引数を適切な形に変形
-        map_obj=np.asarray(treasures)
+        silent=enemies[0].silent
+        enemies=np.asarray([
+            enemy("スライム",4,1,1,[0.5,0.5,0],1,silent),
+            enemy("ゴブリン",3,2,1,[0.6,0.2,0.2],1,silent),
+            enemy("ドラゴン",50,8,3,[0.6,0.1,0.3],3,silent)
+            ])
+        map_obj=np.asarray(enemies+treasures)
         player_status_randomized=np.array(list(map(self.seed_random,[floor]+player.status_array())))
         player_status=np.array([player_status_randomized]).astype(np.float32)
         #初期化されてないなら初期化
@@ -80,84 +86,80 @@ class rand_enemy_DQN(director):
             self.model = DirectorChain(self.x_len,self.y_len)
             self.optimizer = optimizers.SGD()
             self.optimizer.setup(self.model)
-        if self.model_enemy_gen is None:
-            self.en_y_len=1
-            self.model_enemy_gen = DirectorChain(self.x_len,self.en_y_len)
-            self.en_optimizer = optimizers.SGD()
-            self.en_optimizer.setup(self.model_enemy_gen)
-            self.en_optimizer.lr=0.1
+        if self.str_model is None:
+            self.str_y_len=1
+            self.str_model = DirectorChain(self.x_len,self.str_y_len)
+            self.str_optimizer = optimizers.SGD()
+            #self.str_optimizer.lr=0.001
+            self.str_optimizer.setup(self.str_model)
         #前向き計算、ディレクションを取得
         xV=Variable(player_status)
         ans=self.model.fwd(xV).data[0]
-        ans_en=self.model_enemy_gen.fwd(xV).data[0]
+        ans_str=self.str_model.fwd(xV).data[0]
         #記録
         self.y_law_training[self.learning_slot].append(ans)
-        self.en_y_law_training[self.learning_slot].append(ans_en)
         #最低値が0になるように加算
-        ans_map=ans-np.min(ans)
+        ans=ans-np.min(ans)
         if(self.random):
             #完全ランダム
-            result_index=random.choices(range(len(map_obj)),k=1)
+            result_index=random.choices(range(len(map_obj)),k=2)
+            strength=random.random()*10.0
         else:
             #重み付きランダム
-            result_index=random.choices(range(len(map_obj)),k=1,weights=ans_map)
-            #プレビュー。ぜんぶだと見にくいから一回だけ
+            result_index=random.choices(range(len(map_obj)),k=2,weights=ans)
+            strength=ans_str[0]
             if self.learning_slot==0:
-                print(str(np.around(ans,2)))
-                print(str(ans_en))
-        result_index=np.sort(result_index)[0]
-        #--敵生成ここから
-        strength=round(ans_en[0])
-        enemy_gen=enemy("モンスター Lv"+str(strength),round(strength*strength/2),strength,strength,[0.6,0.2,0.2],strength/2,True)
-        #--敵生成ここまで
+                print(str(np.around(ans,2))+"->"+str(np.sort(result_index)))
+        result_index=np.sort(result_index)
         #最終結果
-        result=[enemy_gen,map_obj[result_index]]
+        result=map_obj[result_index]
         #print("["+','.join(map(lambda t:t.name,result))+"]")
         #記録
         self.x_training[self.learning_slot].append(player_status)
         self.y_training[self.learning_slot].append(result_index)
         
-        return result
+        return result.tolist()
     
-    def learn(self,target,actual):
+    def learn(self,reward):
+        #重複の数だけ報酬減額
+        #dup=self.count_duplication(self.y_training[self.learning_slot])
+        #reward-=0.2*dup
+        
+        #報酬クリッピング
+        #if(reward<0):
+        #    reward=-1.0
+        #if(reward>0):
+        #    reward=1.0
+        
         #報酬の入力が一定回数あるまでは学習せずに報酬を記録
-        self.actual_result[self.learning_slot]=actual
+        self.scores[self.learning_slot]=reward
         self.learning_slot+=1
         
         #報酬の入力が溜まったらぜんぶ学習
         if self.learning_slot>=10:
             self.learning_slot=0
-            
+            avg=abs(np.average(np.array(self.scores)))
+            if avg<5:
+                self.optimizer.lr=0.01/(10**((5-avg)/2))
+            else:
+                self.optimizer.lr=0.01
             for j in range(10):
-                score=abs(target-self.actual_result[j])*-1.0
                 #学習データを成形
                 y_score=np.array(self.y_law_training[j].copy())
-                en_y_score=np.array(self.en_y_law_training[j].copy())
                 for i in range(len(self.y_training[j])):
-                    y_score[i][self.y_training[j][i]]=score
-                    if(i<=self.actual_result[j]):
-                        sc=max(0,abs(en_y_score[i][0])-(target-self.actual_result[j]))
-                        print("["+str(i)+"]:(clamp) ("+str(en_y_score[i][0])+")-(14-"+str(self.actual_result[j])+") = "+str(sc))
-                        en_y_score[i][0]=sc
+                    y_score[i][self.y_training[j][i]]=self.scores[j]
                 x = Variable(np.array(self.x_training[j]))
                 y = Variable(y_score.astype(np.float32))
-                y_en=Variable(en_y_score.astype(np.float32))
                 #学習
                 self.model.zerograds()
                 loss = self.model(x,y)
                 loss.backward()
                 self.optimizer.update()
-                self.model_enemy_gen.zerograds()
-                loss_en = self.model_enemy_gen(x,y_en)
-                loss_en.backward()
-                self.en_optimizer.update()
                 
                 #いらなくなったデータを捨てる
                 self.x_training[j].clear()
                 self.y_training[j].clear()
                 self.y_law_training[j].clear()
-                self.en_y_training[j].clear()
-                self.en_y_law_training[j].clear()
             
             
             #完全ランダムにする可能性を変更

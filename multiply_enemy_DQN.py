@@ -23,12 +23,12 @@ from enemy import enemy
 class DirectorChain(Chain):
     def __init__(self,input_count,output_count):
         super(DirectorChain, self).__init__(
-            l_input=L.Linear(input_count,50),
-            l0=L.Linear(50,50),
-            l1=L.Linear(50,50),
-            l2=L.Linear(50,50),
-            l3=L.Linear(50,50),
-            l_output=L.Linear(50,output_count)
+            l_input=L.Linear(input_count,10),
+            l0=L.Linear(10,10),
+            l1=L.Linear(10,10),
+            l2=L.Linear(10,10),
+            l3=L.Linear(10,10),
+            l_output=L.Linear(10,output_count)
 
         )
         
@@ -37,11 +37,11 @@ class DirectorChain(Chain):
 
     def fwd(self,x):
         with chainer.using_config('debug', True):
-            h_input = F.sigmoid(self.l_input(x))
-            h0=F.sigmoid(self.l0(h_input))
-            h1=F.sigmoid(self.l1(h0))
-            h2=F.sigmoid(self.l2(h1))
-            h3=F.sigmoid(self.l3(h2))
+            h_input = F.relu(self.l_input(x))
+            h0=F.relu(self.l0(h_input))
+            h1=F.relu(self.l1(h0))
+            h2=F.relu(self.l2(h1))
+            h3=F.relu(self.l3(h2))
             h_output = self.l_output(h3)
         return h_output
 
@@ -141,7 +141,7 @@ class multiply_enemy_DQN(director):
         #敵生成
         base_enemy=enemy_obj[enemy_result_index[0]]
         enemy_gen=enemy(
-            base_enemy.name+" Lv"+str(round(strength)),
+            base_enemy.name+" Lv"+str(round(strength,2)),
             base_enemy.hp*strength,
             base_enemy.attack*strength,
             base_enemy.shield*strength,
