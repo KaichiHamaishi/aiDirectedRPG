@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Sep  3 17:07:39 2021
+Created on Mon Sep 13 20:34:20 2021
 
-@author: Kaichi Hamaishi
+@author: kaich
 """
+
 from director import director
 
 import numpy as np
@@ -36,17 +37,18 @@ class DirectorChain(Chain):
         return F.mean_squared_error(self.fwd(x), y)
 
     def fwd(self,x):
-         h_input = F.relu(self.l_input(x))
-         h0=F.softmax(self.l0(h_input))
-         h1=F.softmax(self.l1(h0))
-         h2=F.softmax(self.l2(h1))
-         h3=F.softmax(self.l3(h2))
-         h_output = self.l_output(h3)
-         return h_output
+        with chainer.using_config('debug', True):
+            h_input = F.sigmoid(self.l_input(x))
+            h0=F.sigmoid(self.l0(h_input))
+            h1=F.sigmoid(self.l1(h0))
+            h2=F.sigmoid(self.l2(h1))
+            h3=F.sigmoid(self.l3(h2))
+            h_output = self.l_output(h3)
+        return h_output
 
 
-class rand_enemy_DQN(director):
-    description="都度生成される敵が出現。二択が必ず敵とアイテム。"
+class rand_enemy_DQN_v2(director):
+    description="階層だけを入力値として見る。"
     model=None
     x_len=0 #入力層(プレイヤーのステータス+現在位置)の長さ
     y_len=0 #出力層の長さ
@@ -71,8 +73,7 @@ class rand_enemy_DQN(director):
     def make_map(self,floor,player,enemies,treasures):
         #引数を適切な形に変形
         map_obj=np.asarray(treasures)
-        player_status_randomized=np.array(list(map(self.seed_random,[floor]+player.status_array())))
-        player_status=np.array([player_status_randomized]).astype(np.float32)
+        player_status=np.array([[floor]]).astype(np.float32)
         #初期化されてないなら初期化
         if self.model is None:
             self.x_len=len(player_status[0])
@@ -84,8 +85,14 @@ class rand_enemy_DQN(director):
             self.en_y_len=1
             self.model_enemy_gen = DirectorChain(self.x_len,self.en_y_len)
             self.en_optimizer = optimizers.SGD()
+            self.en_optimizer.lr=0.001
             self.en_optimizer.setup(self.model_enemy_gen)
-            self.en_optimizer.lr=0.1
+            
+            for _ in range(100):
+                self.model_enemy_gen.zerograds()
+                loss_en = self.model_enemy_gen((np.ones(100, dtype=np.float32)*5).reshape(100,1),(np.ones(100, dtype=np.float32)*4).reshape(100,1))
+                loss_en.backward()
+                self.en_optimizer.update()
         #前向き計算、ディレクションを取得
         xV=Variable(player_status)
         ans=self.model.fwd(xV).data[0]
@@ -98,18 +105,18 @@ class rand_enemy_DQN(director):
         if(self.random):
             #完全ランダム
             result_index=random.choices(range(len(map_obj)),k=1)
+            strength=random.random()*10.0
         else:
             #重み付きランダム
             result_index=random.choices(range(len(map_obj)),k=1,weights=ans_map)
+            strength=round(ans_en[0])
             #プレビュー。ぜんぶだと見にくいから一回だけ
             if self.learning_slot==0:
                 print(str(np.around(ans,2)))
                 print(str(ans_en))
         result_index=np.sort(result_index)[0]
-        #--敵生成ここから
-        strength=round(ans_en[0])
-        enemy_gen=enemy("モンスター Lv"+str(strength),round(strength*strength/2),strength,strength,[0.6,0.2,0.2],strength/2,True)
-        #--敵生成ここまで
+        #敵生成
+        enemy_gen=enemy("モンスター Lv"+str(strength),round(strength*strength/2),strength,strength,[0.6,0.2,0.2],1,True)
         #最終結果
         result=[enemy_gen,map_obj[result_index]]
         #print("["+','.join(map(lambda t:t.name,result))+"]")
@@ -135,10 +142,11 @@ class rand_enemy_DQN(director):
                 en_y_score=np.array(self.en_y_law_training[j].copy())
                 for i in range(len(self.y_training[j])):
                     y_score[i][self.y_training[j][i]]=score
-                    if(i<=self.actual_result[j]):
-                        sc=max(0,abs(en_y_score[i][0])-(target-self.actual_result[j]))
-                        print("["+str(i)+"]:(clamp) ("+str(en_y_score[i][0])+")-(14-"+str(self.actual_result[j])+") = "+str(sc))
-                        en_y_score[i][0]=sc
+                    if(i<=(self.actual_result[j])):
+                        #en_sc=max(1,en_y_score[i][0]+(1 if(target-self.actual_result[j])<0 else -1))
+                        en_sc=max(1,abs(en_y_score[i][0])-(target-self.actual_result[j]))
+                        print("["+str(j)+"]["+str(i)+"]:"+str(en_sc))
+                        en_y_score[i][0]=en_sc
                 x = Variable(np.array(self.x_training[j]))
                 y = Variable(y_score.astype(np.float32))
                 y_en=Variable(en_y_score.astype(np.float32))

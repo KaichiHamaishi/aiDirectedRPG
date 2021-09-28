@@ -39,13 +39,13 @@ class rulebase(player):
     def map_command(self,ways):
         if(len(ways)<=1):
             self.no_mercy=True
-            return 0
-        if(self.hp<=5 and (type(ways[0]) is enemy)):
-            return 1
-        if(type(ways[0]) == type(ways[1]) and type(ways[0]) is enemy):
-            if(ways[0].hp<ways[1].hp):
-                return 0
-            return 1
+        #    return 0
+        #if(self.hp<=5 and (type(ways[0]) is enemy)):
+        #    return 1
+        #if(type(ways[0]) == type(ways[1]) and type(ways[0]) is enemy):
+        #    if(ways[0].hp<ways[1].hp):
+        #        return 0
+        #    return 1
         
         return 0
     
