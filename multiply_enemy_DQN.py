@@ -49,25 +49,25 @@ class DirectorChain(Chain):
 class multiply_enemy_DQN(director):
     description="難易度を学習し、モンスターの能力値を難易度だけ倍にする。"
     
-    x_training=[deque() for _ in range(10)] #入力値。プレイヤーのステータス
+    x_training=[deque() for _ in range(20)] #入力値。プレイヤーのステータス
     x_len=0 #入力層(プレイヤーのステータス+現在位置)の長さ
     
     treasure_model=None
     treasure_y_len=0 #出力層の長さ
-    treasure_y_training=[deque() for _ in range(10)] #出した最終ディレクション
-    treasure_y_law_training=[deque() for _ in range(10)] #ディレクションするにあたって使ったナマの値
+    treasure_y_training=[deque() for _ in range(20)] #出した最終ディレクション
+    treasure_y_law_training=[deque() for _ in range(20)] #ディレクションするにあたって使ったナマの値
     
     enemy_model=None
     enemy_y_len=0 #出力層の長さ
-    enemy_y_training=[deque() for _ in range(10)] #出した最終ディレクション
-    enemy_y_law_training=[deque() for _ in range(10)] #ディレクションするにあたって使ったナマの値
+    enemy_y_training=[deque() for _ in range(20)] #出した最終ディレクション
+    enemy_y_law_training=[deque() for _ in range(20)] #ディレクションするにあたって使ったナマの値
     
     str_model=None
     str_y_len=0 #出力層の長さ
-    str_y_training=[deque() for _ in range(10)] #出した最終ディレクション
-    str_y_law_training=[deque() for _ in range(10)] #ディレクションするにあたって使ったナマの値
+    str_y_training=[deque() for _ in range(20)] #出した最終ディレクション
+    str_y_law_training=[deque() for _ in range(20)] #ディレクションするにあたって使ったナマの値
     
-    actual_result=[0 for _ in range(10)] #そのプレイでのプレイヤー最終到達階層
+    actual_result=[0 for _ in range(20)] #そのプレイでのプレイヤー最終到達階層
     epsilon=1.0
     random=True
     
@@ -81,9 +81,9 @@ class multiply_enemy_DQN(director):
         trej_obj=np.asarray(treasures)
         silent=enemies[0].silent
         enemy_obj=np.asarray([
-            enemy("スライム",4,1,1,[0.5,0.5,0],1,silent),
+            enemy("スライム",4,1,2,[0.5,0.5,0],1,silent),
             enemy("ゴブリン",3,2,1,[0.6,0.2,0.2],1,silent),
-            enemy("ドラゴン",50,8,3,[0.6,0.1,0.3],3,silent)
+            enemy("ドラゴン",4,2,2,[0.6,0.1,0.3],3,silent)
             ])
         #player_status=np.array([[floor]]).astype(np.float32)
         player_status=np.array([[floor]+player.status_array()]).astype(np.float32)

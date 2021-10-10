@@ -14,7 +14,7 @@ from enemy import enemy
 from treasure import treasure
 
 def get_floors():
-    return 10
+    return 20
 
 def start_game(_player,_director,silent=False):
     player=_player
