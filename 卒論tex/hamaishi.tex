@@ -110,20 +110,39 @@ Chainer‚ð—˜—p‚µ‚½ƒjƒ…[ƒ‰ƒ‹ƒlƒbƒgƒ[ƒN‚ðŽg—p‚µADeep Q-Network‚ÆŒÄ‚Î‚ê‚é•û–@‚ð‚
 \subsection{ˆê”Ê“I‚ÈƒÃ-ƒOƒŠ[ƒfƒB–@‚ðŽg—p‚µ‚½•û–@}
 ‚Ü‚¸Å‰‚Éˆê”Ê“I‚È‹­‰»ŠwK‚ÌŽè–@‚ÉŒ©‚ç‚ê‚é‚æ‚¤‚ÈA
 o—Í’l‚Ì‚¤‚¿Å‚à‚‚¢’l2‚Â‚ð‘I‘ðŽˆ‚Æ‚µ‚Ä’ñŽ¦‚·‚é•û–@‚ð‚Æ‚Á‚½B
-“Á’¥‚ÍŽŸ‚Ì’Ê‚è‚Å‚ ‚éB
+
+\subsubsection{‚±‚ÌŽè–@‚ÌŽè‡} \label{logic_greedy}
+\begin{enumerate}
+\item Ž©“®‚ÅƒQ[ƒ€‚ð10‰ñ—V‚Ô(ƒ‹[ƒ‹ƒx[ƒXAI‚É‚æ‚é)B
+\item 1.‚É‚¨‚¢‚ÄAAIƒfƒBƒŒƒNƒ^[‚Ìo—Í(ˆÈ‰ºAƒfƒBƒŒƒNƒVƒ‡ƒ“‚Æ‚·‚é)‚ÆAÅI“ž’BŠK‘w‚ð‹L˜^‚·‚éB
+\item 1.~2.‚ð10‰ñs‚¢AƒfƒBƒŒƒNƒVƒ‡ƒ“‚ÆÅI“ž’BŠK‘w‚Ìƒf[ƒ^ƒyƒA‚ðì¬‚·‚é(Å‘å‚Å2000ƒf[ƒ^A10ƒvƒŒƒC*Å‘å20ŠK*10‰ñ)B
+\item 3.‚ð‹³Žtƒf[ƒ^‚Æ‚µ‚ÄƒfƒBƒŒƒNƒ^[‚ðŠwK‚³‚¹‚éB
+\end{enumerate}
+
+\subsubsection{ƒQ[ƒ€’†‚É‚¨‚¯‚éƒfƒBƒŒƒNƒ^[‚Ì\‘¢}
+“ü—Í’l7ŒÂAo—Í’l17ŒÂ‚Ìƒjƒ…[ƒ‰ƒ‹ƒlƒbƒgƒ[ƒNB
+“ü—Í’l‚ÍAƒvƒŒƒCƒ„[‚ÌƒXƒe[ƒ^ƒX(•\\ref{tableBattleStatus},\pageref{tableBattleStatus}ƒy[ƒW‚ðŽQÆ)‚Ì’l6‚Â‚ÉAŒ»Ý‚ÌƒvƒŒƒCƒ„[ˆÊ’u‚Ì’l‚ð‡‚í‚¹‚½ŽÀ”’l7ŒÂB
+o—Í’l‚ÍAoŒ»‚·‚é‘S‚Ä‚Ì“G11Ží—Þ‚ÆAoŒ»‚·‚é‘SƒAƒCƒeƒ€6Ží—ÞA‚»‚ê‚¼‚ê‚Ì‰¿’l‚ðŒˆ‚ß‚éŽÀ”’l17ŒÂB
+o—Í’l‚Ì‚¤‚¿AÅ‚à‘å‚«‚¢’l2‚Â‚ªŽ¦‚µ‚Ä‚¢‚é“G‚Ü‚½‚ÍƒAƒCƒeƒ€‚ªƒQ[ƒ€‚ÉoŒ»‚·‚éB
+
+\subsubsection{ŠwK’†‚É‚¨‚¯‚éƒfƒBƒŒƒNƒ^[‚Ì\‘¢}
+\ref{logic_greedy}‚±‚ÌŽè–@‚ÌŽè‡‚ÅŽ¦‚µ‚½’Ê‚è‹L˜^‚³‚ê‚½AƒfƒBƒŒƒNƒ^[‚ªƒQ[ƒ€’†‚ÅŽg—p‚µ‚½“üo—Í‚Ì’l‚Ì‚¤‚¿A
+‘I‚Î‚ê‚½‘I‘ðŽˆ(‚±‚ÌŽè–@‚Å‚ÍÅ‚à‘å‚«‚¢’l2‚Â)‚ðAŽZo‚³‚ê‚½ƒXƒRƒA’l‚É•ÏX‚µAŒë·C³ŠÖ”‚É‚©‚¯ŠwK‚ðs‚¤B
 
 \subsubsection{ƒXƒRƒA‚ÌŽZo•û–@}
-ƒvƒŒƒCƒ„[‚ªŽ€–S‚·‚é‚Ü‚Å‚É“ž’B‚µ‚½ƒQ[ƒ€‚Ìis“x10‰ñ•ª‚Ì•½‹Ï‚ÆA’è‚ß‚½–Ú•W‚Ì·‚ðƒXƒRƒA‚Æ‚µ‚Ä‚¢‚éB
-Œ»Ý‚Í14‰ñ–Ú‚Ì‘I‘ðŽˆ‚Å‚¿‚å‚¤‚Ç—Ís‚«‚é“ïˆÕ“x‚É’²®‚·‚é(æ‚É‹L‚µ‚½’Ê‚èA20‰ñ–Ú‚Ì‘I‘ðŽˆ‚ð¶‚«”²‚¢‚½‚çƒQ[ƒ€ƒNƒŠƒA)‚½‚ß‚ÉA–Ú•W‚Ì’l‚ð14‚Æ‚µ‚Ä‚¢‚éB
+ƒvƒŒƒCƒ„[‚ªŽ€–S‚·‚é‚Ü‚Å‚É“ž’B‚µ‚½ƒQ[ƒ€‚Ìis“x10‰ñ•ª‚Ì•½‹Ï‚ÆA–Ú•W’l‚Ì·‚ðƒXƒRƒA‚Æ‚·‚éB
+‚±‚ÌŽè–@‚Å‚Í–Ú•W‚Ì’l‚ð14‚Æ‚µ‚Ä‚¢‚é(‘S20ŠK‚Ì‚¤‚¿14ŠK–Ú‚Ì‘I‘ðŽˆ‚Å‚¿‚å‚¤‚Ç—Ís‚«‚é“ïˆÕ“x‚É’²®‚·‚é‚½‚ß)B
 ‚±‚Ì‚Æ‚«ƒXƒRƒA‚Í-14~0‚Ì”ÍˆÍ‚Æ‚È‚èA0‚ªÅ‚‚Å‚ ‚éB
+—á‚¦‚ÎA—Ís‚«‚½ŠK‘w‚Ì•½‹Ï‚ª10ŠK‚¾‚Á‚½ê‡AƒXƒRƒA‚Í-4‚Å‚ ‚éB
 
 \subsubsection{Fixed Target Q-Network}
-ƒlƒbƒgƒ[ƒN‚ð–ˆ‰ñXV‚·‚é‚ÆA‚¢‚Â‚Ü‚ÅŒo‚Á‚Ä‚àŽû‘©‚µ‚È‚¢‚Æ‚¢‚¤Ž–‘Ô‚ª”­¶‚·‚é‰Â”\«‚ª‚ ‚é‚½‚ßAŠwK‚ÍƒXƒRƒA‚ÌŽæ“¾10‰ñ–ˆ‚É‚Ì‚Ýs‚¤B‚»‚ê‚Ü‚Å‹³Žtƒf[ƒ^‚Í•Û‘¶‚³‚ê‚éB
+ƒlƒbƒgƒ[ƒN‚ð–ˆ‰ñXV‚·‚é‚ÆA‚¢‚Â‚Ü‚ÅŒo‚Á‚Ä‚àŽû‘©‚µ‚È‚¢‚Æ‚¢‚¤Ž–‘Ô‚ª”­¶‚·‚é‰Â”\«‚ª‚ ‚éB
+‚»‚Ì‚½‚ßAŠwK‚ÍƒXƒRƒA‚ÌŽæ“¾10‰ñ–ˆ‚É‚Ì‚Ýs‚¤B‚»‚ê‚Ü‚Å‹³Žtƒf[ƒ^‚Í•Û‘¶‚³‚ê‚éB
 
 \subsubsection{ƒÃ‚ÉŠî‚Ã‚­ƒ‰ƒ“ƒ_ƒ€‚ÈƒAƒNƒVƒ‡ƒ“}
 ƒÃ-ƒOƒŠ[ƒfƒB–@‚É•í‚¢AŠwK‰Šú‚ÍŠwK‚µ‚½‚à‚Ì‚Å‚Í‚È‚­—”‚ðo—Í‚É—p‚¢‚éB
 —lX‚Èo—Í‚ðŽŽs‚·‚é‚±‚Æ‚ÅA‚æ‚è‚‚¢ƒXƒRƒA‚Ìo—Í‚ð”­Œ©‚·‚é‘_‚¢‚ª‚ ‚éB
-‚±‚Ìƒ‰ƒ“ƒ_ƒ€‚ÈŽŽs‚ÍƒÃ‚ÌŠm—¦‚Ås‚í‚ê‚éBƒÃ‚Ì‰Šú’l‚Í1.0‚ÅAŠwK‚ªs‚í‚ê‚é(ƒXƒRƒAŽæ“¾10‰ñ)–ˆ‚É0.05Œ¸ŽZ‚³‚ê‚éB
+‚±‚Ìƒ‰ƒ“ƒ_ƒ€‚ÈŽŽs‚ÍƒÃ‚ÌŠm—¦‚Ås‚í‚ê‚éBƒÃ‚Ì‰Šú’l‚Í1.0(100%)AŠwK‚ªs‚í‚ê‚é(ƒXƒRƒAŽæ“¾10‰ñ)–ˆ‚É0.05(5%)Œ¸ŽZ‚³‚ê‚éB
 
 \subsubsection{Œ‹‰Ê}
 Œ‹‰ÊA’ñŽ¦‚³‚ê‚é‘I‘ðŽˆ‚ÍƒQ[ƒ€‚ð’Ê‚µ‚Ä“¯‚¶‚à‚Ì‚Î‚©‚è‚É‚È‚èA
@@ -138,9 +157,27 @@ Chainer‚ð—˜—p‚µ‚½ƒjƒ…[ƒ‰ƒ‹ƒlƒbƒgƒ[ƒN‚ðŽg—p‚µADeep Q-Network‚ÆŒÄ‚Î‚ê‚é•û–@‚ð‚
 \end{center}
 \end{table}
 
-\subsection{d‚Ý•t‚«ƒ‰ƒ“ƒ_ƒ€‚ðÌ—p‚µ‚½•û–@}
+\subsection{d‚Ý•t‚«ƒ‰ƒ“ƒ_ƒ€‚ðÌ—p‚µ‚½•û–@}\label{random-method}
 æ‚Ì•û–@‚ÅŽæ‚Á‚½Žè–@‚É‰Á‚¦‚ÄA‘I‘ðŽˆ‚ð’ñŽ¦‚·‚é•û–@‚ð•ÏX‚·‚éB
 o—Í‚ÌÅ‚’l2‚Â‚Å‚Í‚È‚­Ao—Í’l‚ðd‚Ý‚Æ‚µ‚½ƒ‰ƒ“ƒ_ƒ€‚È’Šo‚Å‘I‘ðŽˆ‚ð’ñŽ¦‚·‚é•û–@‚ð‚Æ‚Á‚½B
+
+\subsubsection{‚±‚ÌŽè–@‚ÌŽè‡} \label{logic_random}
+\begin{enumerate}
+\item Ž©“®‚ÅƒQ[ƒ€‚ð10‰ñ—V‚Ô(ƒ‹[ƒ‹ƒx[ƒXAI‚É‚æ‚é)B
+\item 1.‚É‚¨‚¢‚ÄAAIƒfƒBƒŒƒNƒ^[‚Ìo—Í(ˆÈ‰ºAƒfƒBƒŒƒNƒVƒ‡ƒ“‚Æ‚·‚é)‚ÆAÅI“ž’BŠK‘w‚ð‹L˜^‚·‚éB
+\item 1.~2.‚ð10‰ñs‚¢AƒfƒBƒŒƒNƒVƒ‡ƒ“‚ÆÅI“ž’BŠK‘w‚Ìƒf[ƒ^ƒyƒA‚ðì¬‚·‚é(Å‘å‚Å2000ƒf[ƒ^A10ƒvƒŒƒC*Å‘å20ŠK*10‰ñ)B
+\item 3.‚ð‹³Žtƒf[ƒ^‚Æ‚µ‚ÄƒfƒBƒŒƒNƒ^[‚ðŠwK‚³‚¹‚éB
+\end{enumerate}
+
+\subsubsection{ƒQ[ƒ€’†‚É‚¨‚¯‚éƒfƒBƒŒƒNƒ^[‚Ì\‘¢}
+“ü—Í’l7ŒÂAo—Í’l17ŒÂ‚Ìƒjƒ…[ƒ‰ƒ‹ƒlƒbƒgƒ[ƒNB
+“ü—Í’l‚ÍAƒvƒŒƒCƒ„[‚ÌƒXƒe[ƒ^ƒX(•\\ref{tableBattleStatus},\pageref{tableBattleStatus}ƒy[ƒW‚ðŽQÆ)‚Ì’l6‚Â‚ÉAŒ»Ý‚ÌƒvƒŒƒCƒ„[ˆÊ’u‚Ì’l‚ð‡‚í‚¹‚½ŽÀ”’l7ŒÂB
+o—Í’l‚ÍAoŒ»‚·‚é‘S‚Ä‚Ì“G11Ží—Þ‚ÆAoŒ»‚·‚é‘SƒAƒCƒeƒ€6Ží—ÞA‚»‚ê‚¼‚ê‚Ì‰¿’l‚ðŒˆ‚ß‚éŽÀ”’l17ŒÂB
+o—Í’l‚ðd‚Ý‚Æ‚µAoŒ»‚·‚é“G‚Ü‚½‚ÍƒAƒCƒeƒ€‚ðd‚Ý•t‚«ƒ‰ƒ“ƒ_ƒ€‚Å2‚Â‘I‚ÔB
+
+\subsubsection{ŠwK’†‚É‚¨‚¯‚éƒfƒBƒŒƒNƒ^[‚Ì\‘¢}
+\ref{logic_random}‚±‚ÌŽè–@‚ÌŽè‡‚ÅŽ¦‚µ‚½’Ê‚è‹L˜^‚³‚ê‚½AƒfƒBƒŒƒNƒ^[‚ªƒQ[ƒ€’†‚ÅŽg—p‚µ‚½“üo—Í‚Ì’l‚Ì‚¤‚¿A
+‘I‚Î‚ê‚½‘I‘ðŽˆ(d‚Ý•t‚«ƒ‰ƒ“ƒ_ƒ€‚Å‘I‚Î‚ê‚Ä‚¢‚½2‚Â)‚ðAŽZo‚³‚ê‚½ƒXƒRƒA’l‚É•ÏX‚µAŒë·C³ŠÖ”‚É‚©‚¯ŠwK‚ðs‚¤B
 
 \subsubsection{Œ‹‰Ê}
 3000‰ñ–Ú‘OŒã‚ÌŠwKˆÈ~AƒXƒRƒA‚ªˆÀ’è‚µ‚Ä-5ˆÈão‚éŒ‹‰Ê‚Æ‚È‚Á‚½B
@@ -160,11 +197,31 @@ Chainer‚ð—˜—p‚µ‚½ƒjƒ…[ƒ‰ƒ‹ƒlƒbƒgƒ[ƒN‚ðŽg—p‚µADeep Q-Network‚ÆŒÄ‚Î‚ê‚é•û–@‚ð‚
 \subsection{ŠwK‚É‰ž‚¶‚ÄŠwK—¦‚ð’á‰º‚³‚¹‚Ä‚¢‚­•û–@}
 ’¼‹ß‚ÌƒXƒRƒA‚©‚çŠwK‚Ìi‚Ý‹ï‡‚ðŒ©‚ÄAŠwK—¦‚ð’á‰º‚³‚¹‚é•û–@‚ð‚Æ‚Á‚½B
 æ‚Ì}‚É‚¨‚¢‚ÄŠwK3000‰ñ–ÚˆÈ~A–Ú•W•t‹ß‚Å—h‚ê“®‚¢‚Ä‚¢‚éaverage(žò‚Ìü)‚ð–Ú•W‚ÉŽû‘©‚³‚¹‚é‚±‚Æ‚ª‘_‚¢‚Å‚ ‚éB
-\subsubsection{Žè–@}
-wip
+
+\subsubsection{‚±‚ÌŽè–@‚ÌŽè‡} 
+\begin{enumerate}
+\item Ž©“®‚ÅƒQ[ƒ€‚ð10‰ñ—V‚Ô(ƒ‹[ƒ‹ƒx[ƒXAI‚É‚æ‚é)B
+\item 1.‚É‚¨‚¢‚ÄAAIƒfƒBƒŒƒNƒ^[‚Ìo—Í(ˆÈ‰ºAƒfƒBƒŒƒNƒVƒ‡ƒ“‚Æ‚·‚é)‚ÆAÅI“ž’BŠK‘w‚ð‹L˜^‚·‚éB
+\item 1.~2.‚ð10‰ñs‚¢AƒfƒBƒŒƒNƒVƒ‡ƒ“‚ÆÅI“ž’BŠK‘w‚Ìƒf[ƒ^ƒyƒA‚ðì¬‚·‚é(Å‘å‚Å2000ƒf[ƒ^A10ƒvƒŒƒC*Å‘å20ŠK*10‰ñ)B
+\item 3.‚ÌŒ‹‰Ê‚É‰ž‚¶‚ÄAŠwK—¦lr‚ðŒ¸­‚³‚¹‚éB
+\item 3.‚ð‹³Žtƒf[ƒ^‚Æ‚µ‚ÄƒfƒBƒŒƒNƒ^[‚ðŠwK‚³‚¹‚éB
+\end{enumerate}
+
+\subsubsection{ƒQ[ƒ€’†‚É‚¨‚¯‚éƒfƒBƒŒƒNƒ^[‚Ì\‘¢}
+\ref{random-method}‚É“¯‚¶‚Å‚ ‚é‚½‚ßAŠ„ˆ¤‚·‚éB
+
+\subsubsection{ŠwK’†‚É‚¨‚¯‚éƒfƒBƒŒƒNƒ^[‚Ì\‘¢}
+\ref{random-method}‚É“¯‚¶‚Å‚ ‚é‚½‚ßAŠ„ˆ¤‚·‚éB
+
+\subsubsection{ŠwK—¦‚Ì•ÏX}
+ƒXƒRƒA‚ÌŽæ“¾10‰ñ–ˆ‚És‚í‚ê‚éŠwK‚Ì’¼‘O‚ÉA‚»‚Ì10‰ñ‚ÌƒXƒRƒA‚É‰ž‚¶‚ÄAŠwK—¦lr‚ð•ÏX‚·‚éB
+ŒvŽZŽ®‚Í
+‚Ù‚°‚Ù‚°‚Ù‚°
+
 \subsubsection{Œ‹‰Ê}
 Œ‹‰ÊA‘_‚¢’Ê‚è‚É‚Í‚È‚ç‚¸AŠwK‰Šú‚æ‚è-5ˆÈã‚ÌƒXƒRƒA‚ªo‚é‚æ‚¤‚É‚È‚é‚Æ‚¢‚¤Œ‹‰Ê‚É‚È‚Á‚½B
 -5ˆÈã‚ÌƒXƒRƒA‚ª‘½‚­o‚Ä‚Í‚¢‚é‚ªAŠwK‚ª•s‘«‚µ‚Ä‚¢‚é‚Ì‚©A‚µ‚Î‚µ‚Î’á‚¢ƒXƒRƒA‚ªo‚é‚Æ‚¢‚¤•sˆÀ’è‚È‚à‚Ì‚Æ‚È‚Á‚½B
+
 \begin{table}[hbt]
 \caption{ŠwK‚É‰ž‚¶‚ÄŠwK—¦‚ð’á‰º‚³‚¹‚Ä‚¢‚­•û–@‚É‚¨‚¯‚é•½‹Ï“ž’BŠK‘w‚ÆƒXƒRƒA}
 \label{figure3}
@@ -176,8 +233,13 @@ wip
 \subsection{oŒ»‚·‚é“G‚ð“®“I‚É¶¬‚·‚é•û–@}
 -5‚æ‚è‚‚¢ƒXƒRƒA‚ªo‚È‚¢Œ´ˆö‚Æ‚µ‚ÄAˆê’iŠKˆÕ‚µ‚¢‘I‘ðŽˆ‚ð’ñŽ¦‚µ‚½‚Æ‚«‚ÉˆÕ‚µ‚·‚¬A‹t‚Éˆê’iŠK“ï‚µ‚¢‘I‘ðŽˆ‚ð’ñŽ¦‚µ‚½‚Æ‚«‚É“ï‚µ‚·‚¬‚éA‚Æ‚¢‚¤u‘Ñ‚É’Z‚µæF‚É’·‚µvó‘Ô‚É‚È‚Á‚Ä‚¢‚é‚ª‚½‚ß‚ÉU‚ê•‚ª‘å‚«‚­‚È‚Á‚Ä‚¢‚é‚Æ‚¢‚¤‰¼à‚ð—§‚Ä‚½B
 ‚±‚ê‚Ü‚Å‚ÍA‚ ‚ç‚©‚¶‚ßŒˆ‚ß‚ç‚ê‚½‹­‚³‚ðŽ‚Â“G‚ð\”Ží—Þ‚©‚ç‘I‚ñ‚Å‚¢‚½B‚±‚ê‚ð•ÏX‚·‚éB
+
 \subsubsection{Žè–@}
-‚Ù‚°
+\begin{enumerate}
+\item ‚Ù‚°
+\item ‚Ù‚°‚Ù‚°
+\end{enumerate}
+
 \subsubsection{Œ‹‰Ê}
 ‚Ù‚°‚Ù‚°
 
