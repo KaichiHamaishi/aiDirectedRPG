@@ -15,7 +15,7 @@ from require_human import require_human
 from player_rulebase import rulebase
 #from random_director import random_director
 #from DQN_director_v7 import DQN_director_v7 as dqn
-#from DQN_random_v9 import DQN_random_v9 as dqn
+#from DQN_random_v7 import DQN_random_v7 as dqn
 from multiply_enemy_DQN import multiply_enemy_DQN as dqn
 #from simple_climbing import simple_climmbing as climbing
 
@@ -41,7 +41,7 @@ print("目標の平均到達階層は？(0.0~"+str(game.get_floors())+"):")
 target_chance=float(input())
 
 game_success=deque()
-#score_history=deque()
+score_history=deque()
 avg_history=deque()
 if time_span>0:
     for span in range(time_span):
@@ -63,7 +63,7 @@ if time_span>0:
         #学習
         director.learn(target_chance,avg)
         #director.learn(learn_score)
-        #score_history.append(learn_score)
+        score_history.append(learn_score)
         avg_history.append(avg)
         game_success.clear()
         
@@ -87,9 +87,9 @@ else:
         learn_score=abs(target_chance-avg)*-1.0
         #print("報酬:",learn_score,"\n")
         #学習
-        #director.learn(target_chance,avg)
-        director.learn(learn_score)
-        #score_history.append(learn_score)
+        director.learn(target_chance,avg)
+        #director.learn(learn_score)
+        score_history.append(learn_score)
         avg_history.append(avg)
         game_success.clear()
         if learn_score>-1:
@@ -104,7 +104,8 @@ else:
         
 
 plt.plot(range(span+1),avg_history,label="result")
-plt.plot([0,span+1],[target_chance,target_chance],label="target",ls=":")
+plt.plot(range(span+1),score_history,label="score")
+#plt.plot([0,span+1],[target_chance,target_chance],label="target",ls=":")
 plt.legend()
 plt.show()
 #学習結果を確かめるために手動プレイを開始

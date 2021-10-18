@@ -100,7 +100,8 @@ class DQN_director_v7(director):
         
         return result.tolist()
     
-    def learn(self,reward):
+    def learn(self,target_chance,avg):
+        reward=abs(target_chance-avg)*-1.0
         #重複の数だけ報酬減額
         #dup=self.count_duplication(self.y_training[self.learning_slot])
         #reward-=0.2*dup
@@ -146,7 +147,8 @@ class DQN_director_v7(director):
             print("ε:"+str(self.epsilon)+","+str(self.random))
         
         #learnメソッドおわり
-            
+    
+    
     #重複を数える関数
     def count_duplication(self,array):
         unique=deque()

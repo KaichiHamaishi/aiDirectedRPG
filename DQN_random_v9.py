@@ -102,7 +102,8 @@ class DQN_random_v9(director):
         
         return result.tolist()
     
-    def learn(self,reward):
+    def learn(self,target_chance,avg):
+        reward=abs(target_chance-avg)*-1.0
         #重複の数だけ報酬減額
         #dup=self.count_duplication(self.y_training[self.learning_slot])
         #reward-=0.2*dup

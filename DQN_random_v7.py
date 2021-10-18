@@ -49,10 +49,10 @@ class DQN_random_v7(director):
     model=None
     x_len=0
     y_len=0
-    x_training=[deque() for _ in range(10)]
-    y_training=[deque() for _ in range(10)]
-    y_law_training=[deque() for _ in range(10)]
-    scores=[0 for _ in range(10)]
+    x_training=[deque() for _ in range(20)]
+    y_training=[deque() for _ in range(20)]
+    y_law_training=[deque() for _ in range(20)]
+    scores=[0 for _ in range(20)]
     epsilon=1.0
     random=True
     
@@ -98,7 +98,8 @@ class DQN_random_v7(director):
         
         return result.tolist()
     
-    def learn(self,reward):
+    def learn(self,target_chance,avg):
+        reward=abs(target_chance-avg)*-1.0
         #重複の数だけ報酬減額
         #dup=self.count_duplication(self.y_training[self.learning_slot])
         #reward-=0.2*dup
@@ -144,7 +145,7 @@ class DQN_random_v7(director):
             print("ε:"+str(self.epsilon)+","+str(self.random))
         
         #learnメソッドおわり
-            
+        
     #重複を数える関数
     def count_duplication(self,array):
         unique=deque()
