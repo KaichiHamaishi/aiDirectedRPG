@@ -3,12 +3,18 @@
 \usepackage{graphicx}
 \usepackage{bm}
 \usepackage{ascmac}
+
+
+
 \title{強化学習を利用したAIディレクターの制作}
 \author{濱石海地}
-\date{2021年10月12日}
-\begin{document}
+\date{2021年10月19日}
 
-\setlength{\textwidth}{16cm}
+\setlength{\textwidth}{16truecm}
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+
+\begin{document}
 
 \maketitle
 \clearpage
@@ -129,9 +135,10 @@ Pythonのコマンドライン上で動作する、簡素なRPG。
 \begin{table}[hbt]
 \caption{ゲーム中に出現する敵およびアイテムのリスト}
 \label{tableGameItems}
-\begin{tabular}{cl}
-\\ \hline
-敵 \\
+\begin{center}
+\begin{tabular}{|c|l|l|l|}
+\hline
+\multicolumn{4}{|c|}{敵} \\ \hline
 名称 & 生命力 & 攻撃力 & 防御力 \\ \hline
 \hline
 スライム Lv1 & 4 & 1 & 1 \\ \hline
@@ -154,17 +161,19 @@ Pythonのコマンドライン上で動作する、簡素なRPG。
 ゴブリン Lv8 & 10 & 9 & 2 \\ \hline
 ゴブリン Lv9 & 11 & 10 & 3 \\ \hline
 ゴブリン Lv10 & 12 & 11 & 3 \\ \hline
-ドラゴン & 50 & 8 & 3 \\ \hline
-アイテム\\
-名称 & 効果 \\ \hline
-新しい鎧 & 最大生命力を5増加 \\ \hline
-新しい剣 & 攻撃力を2増加 \\ \hline
-新しい盾 & 防御力を2増加 \\ \hline
-爆弾 & 爆弾所持数を1増加 \\ \hline
-薬草 & 薬草所持数を1増加 \\ \hline
-宿屋 & 生命力を10回復
+ドラゴン & 50 & 8 & 3 \\ \hline 
+\hline \hline
+\multicolumn{4}{|c|}{アイテム}\\ \hline
+名称 & \multicolumn{3}{c|}{効果} \\ \hline
 \hline
+新しい鎧 & \multicolumn{3}{l|}{最大生命力を5増加} \\ \hline
+新しい剣 & \multicolumn{3}{l|}{攻撃力を2増加} \\ \hline
+新しい盾 & \multicolumn{3}{l|}{防御力を2増加} \\ \hline
+爆弾 & \multicolumn{3}{l|}{爆弾所持数を1増加} \\ \hline
+薬草 & \multicolumn{3}{l|}{薬草所持数を1増加} \\ \hline
+宿屋 & \multicolumn{3}{l|}{生命力を10回復} \\ \hline
 \end{tabular}
+\end{center}
 \end{table}
 
 \subsubsection{学習におけるディレクターの構造}
@@ -266,7 +275,6 @@ Pythonのコマンドライン上で動作する、簡素なRPG。
 \begin{math}
 avg>-5のとき
 lr=0.01/(10^(\frac{5+avg}{2}))
-
 avg<=-5のとき
 lr=0.01
 \end{math}
@@ -308,28 +316,30 @@ lr=0.01
 
 更にもう1つのニューラルネットワークを使用し、出現するアイテムを決める(実数値6つを出力し、そのうち最大のもの)。
 
-この手法で登場する敵およびアイテムは、表\ref{tableGameItems2}(\pageref{tableGameItems2})の通り。
+この手法で登場する敵およびアイテムは、表\ref{tableGameItems2}(\pageref{tableGameItems2}ページ)の通り。
 \begin{table}[hbt]
 \caption{ゲーム中に出現する敵およびアイテムのリスト}
 \label{tableGameItems2}
-\begin{tabular}{cl}
-\\ \hline
-敵 (xは第2ニューラルネットワークの出力値)\\
+\begin{center}
+\begin{tabular}{|c|l|l|l|}
+\hline
+\multicolumn{4}{|c|}{敵 (xは第2ニューラルネットワークの出力値)} \\ \hline
 名称 & 生命力 & 攻撃力 & 防御力 \\ \hline
 \hline
 スライム & 4*x & 1*x & 2*x \\ \hline
 ゴブリン & 3*x & 2*x & 1*x \\ \hline
-ドラゴン & 4*x & 2*x & 2*x \\ \hline
-アイテム\\
-名称 & 効果 \\ \hline
-新しい鎧 & 最大生命力を5増加 \\ \hline
-新しい剣 & 攻撃力を2増加 \\ \hline
-新しい盾 & 防御力を2増加 \\ \hline
-爆弾 & 爆弾所持数を1増加 \\ \hline
-薬草 & 薬草所持数を1増加 \\ \hline
-宿屋 & 生命力を10回復
+ドラゴン & 4*x & 2*x & 2*x \\ \hline \hline \hline
+\multicolumn{4}{|c|}{アイテム}\\ \hline
+名称 & \multicolumn{3}{c|}{効果} \\ \hline
 \hline
+新しい鎧 & \multicolumn{3}{l|}{最大生命力を5増加} \\ \hline
+新しい剣 & \multicolumn{3}{l|}{攻撃力を2増加} \\ \hline
+新しい盾 & \multicolumn{3}{l|}{防御力を2増加} \\ \hline
+爆弾 & \multicolumn{3}{l|}{爆弾所持数を1増加} \\ \hline
+薬草 & \multicolumn{3}{l|}{薬草所持数を1増加} \\ \hline
+宿屋 & \multicolumn{3}{l|}{生命力を10回復} \\ \hline
 \end{tabular}
+\end{center}
 \end{table}
 
 \subsubsection{結果}
