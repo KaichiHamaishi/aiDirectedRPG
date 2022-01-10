@@ -14,7 +14,7 @@ from enemy import enemy
 from treasure import treasure
 
 def get_floors():
-    return 10
+    return 20
 
 def start_game(_player,_director,silent=False):
     player=_player
@@ -23,29 +23,36 @@ def start_game(_player,_director,silent=False):
     goal=get_floors()
     enemies=[
         #名前、HP、攻撃力、防御力、行動の確率[攻撃,防御,必殺]、経験値　の順
-        enemy("スライム Lv1",4,1,1,[0.5,0.5,0],1,silent),
-        enemy("スライム Lv2",5,1,1,[0.5,0.5,0],1,silent),
-        enemy("スライム Lv3",5,1,2,[0.5,0.5,0],2,silent),
-        enemy("スライム Lv4",6,1,2,[0.5,0.5,0],2,silent),
-        enemy("スライム Lv5",7,2,2,[0.5,0.5,0],3,silent),
-        enemy("スライム Lv6",8,2,2,[0.5,0.5,0],3,silent),
-        enemy("スライム Lv7",9,3,3,[0.5,0.5,0],4,silent),
-        enemy("スライム Lv8",10,3,3,[0.5,0.5,0],4,silent),
-        enemy("スライム Lv9",11,3,4,[0.5,0.5,0],5,silent),
-        enemy("スライム Lv10",12,3,4,[0.5,0.5,0],5,silent),
+        #enemy("スライム Lv1",4,1,1,[0.5,0.5,0],1,silent),
+        #enemy("スライム Lv2",5,1,1,[0.5,0.5,0],1,silent),
+        #enemy("スライム Lv3",5,1,2,[0.5,0.5,0],2,silent),
+        #enemy("スライム Lv4",6,1,2,[0.5,0.5,0],2,silent),
+        #nemy("スライム Lv5",7,2,2,[0.5,0.5,0],3,silent),
+        #nemy("スライム Lv6",8,2,2,[0.5,0.5,0],3,silent),
+        #enemy("スライム Lv7",9,3,3,[0.5,0.5,0],4,silent),
+        #enemy("スライム Lv8",10,3,3,[0.5,0.5,0],4,silent),
+        #enemy("スライム Lv9",11,3,4,[0.5,0.5,0],5,silent),
+        #enemy("スライム Lv10",12,3,4,[0.5,0.5,0],5,silent),
         
-        enemy("ゴブリン Lv1",3,2,1,[0.6,0.2,0.2],1,silent),
-        enemy("ゴブリン Lv2",4,3,1,[0.6,0.2,0.2],1,silent),
-        enemy("ゴブリン Lv3",5,4,1,[0.6,0.2,0.2],2,silent),
-        enemy("ゴブリン Lv4",6,5,1,[0.6,0.2,0.2],2,silent),
-        enemy("ゴブリン Lv5",7,6,2,[0.6,0.2,0.2],3,silent),
-        enemy("ゴブリン Lv6",8,7,2,[0.6,0.2,0.2],3,silent),
-        enemy("ゴブリン Lv7",9,8,2,[0.6,0.2,0.2],4,silent),
-        enemy("ゴブリン Lv8",10,9,2,[0.6,0.2,0.2],4,silent),
-        enemy("ゴブリン Lv9",11,10,3,[0.6,0.2,0.2],5,silent),
-        enemy("ゴブリン Lv10",12,11,3,[0.6,0.2,0.2],5,silent),
+        #enemy("ゴブリン Lv1",3,2,1,[0.6,0.2,0.2],1,silent),
+        #enemy("ゴブリン Lv2",4,3,1,[0.6,0.2,0.2],1,silent),
+        #enemy("ゴブリン Lv3",5,4,1,[0.6,0.2,0.2],2,silent),
+        #enemy("ゴブリン Lv4",6,5,1,[0.6,0.2,0.2],2,silent),
+        #enemy("ゴブリン Lv5",7,6,2,[0.6,0.2,0.2],3,silent),
+        #enemy("ゴブリン Lv6",8,7,2,[0.6,0.2,0.2],3,silent),
+        #enemy("ゴブリン Lv7",9,8,2,[0.6,0.2,0.2],4,silent),
+        #enemy("ゴブリン Lv8",10,9,2,[0.6,0.2,0.2],4,silent),
+        #enemy("ゴブリン Lv9",11,10,3,[0.6,0.2,0.2],5,silent),
+        #enemy("ゴブリン Lv10",12,11,3,[0.6,0.2,0.2],5,silent),
         
-        enemy("ドラゴン",50,8,3,[0.6,0.1,0.3],10,silent)
+        #enemy("ドラゴン",50,8,3,[0.6,0.1,0.3],10,silent)
+        enemy("弱いスライム",4,1,1,[0.5,0.5,0],0,silent),
+        enemy("スライム",7,2,2,[0.5,0.5,0],0,silent),
+        enemy("強いスライム",11,3,4,[0.5,0.5,0],0,silent),
+        enemy("弱いゴブリン",3,2,1,[0.6,0.2,0.2],0,silent),
+        enemy("ゴブリン",8,5,2,[0.6,0.2,0.2],0,silent),
+        enemy("強いゴブリン",10,5,2,[0.6,0.2,0.2],0,silent),
+        enemy("ドラゴン",25,6,3,[0.6,0.1,0.3],0,silent)
         ]
     #enemies=list(map(
     #    lambda t:enemy(
